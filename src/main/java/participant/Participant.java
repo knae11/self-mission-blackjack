@@ -1,0 +1,4 @@
+package participant;
+
+interface Participant {
+}
