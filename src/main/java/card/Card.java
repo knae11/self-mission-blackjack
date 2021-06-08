@@ -1,5 +1,7 @@
 package card;
 
+import exception.card.CardInvalidException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +29,7 @@ public class Card {
         if (cache.containsKey(suit.getId() + denomination.getId())) {
             return cache.get(suit.getId() + denomination.getId());
         }
-        throw new IllegalArgumentException();
+        throw new CardInvalidException();
     }
 
 }
