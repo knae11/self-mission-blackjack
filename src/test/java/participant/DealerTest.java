@@ -42,7 +42,7 @@ public class DealerTest {
 
     @DisplayName("카드합계 16, 받을 수 있는지 조건 확인")
     @Test
-    void isAbleToTakeWhen21() {
+    void isAbleToTakeWhen16() {
         Participant dealer = new Dealer();
         dealer.takeCards(Arrays.asList(Card.of(Suit.HEART, Denomination.TEN),
                 Card.of(Suit.CLOVER, Denomination.SIX)));
@@ -52,7 +52,7 @@ public class DealerTest {
 
     @DisplayName("카드합계 17, 받을 수 있는지 조건 확인")
     @Test
-    void isAbleToTakeWhen22() {
+    void isAbleToTakeWhen17() {
         Participant dealer = new Dealer();
         dealer.takeCards(Arrays.asList(Card.of(Suit.HEART, Denomination.TEN),
                 Card.of(Suit.CLOVER, Denomination.SEVEN)));
