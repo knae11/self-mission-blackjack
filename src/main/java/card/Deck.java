@@ -1,6 +1,6 @@
 package card;
 
-import exception.card.DeckEmptyException;
+import exception.card.EmptyException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,7 +36,7 @@ public class Deck {
 
     public Card drawCard() {
         if (cards.size() <= ZERO) {
-            throw new DeckEmptyException();
+            throw new EmptyException();
         }
         return cards.remove(cards.size() - 1);
     }

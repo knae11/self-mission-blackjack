@@ -1,6 +1,6 @@
 package card;
 
-import exception.card.DeckEmptyException;
+import exception.card.EmptyException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -80,6 +80,6 @@ public class DeckTest {
         Deck deck = Deck.listOf(cards);
         assertThat(deck.drawTwoCards());
 
-        assertThatThrownBy(deck::drawTwoCards).isInstanceOf(DeckEmptyException.class);
+        assertThatThrownBy(deck::drawTwoCards).isInstanceOf(EmptyException.class);
     }
 }

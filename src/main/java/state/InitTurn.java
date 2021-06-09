@@ -6,25 +6,25 @@ import exception.card.CardCannotTakeException;
 
 import java.util.List;
 
-public class Hit extends Running {
+public class InitTurn extends Running {
     private final Cards cards;
 
-    public Hit(Cards cards) {
-        this.cards = cards;
+    public InitTurn() {
+        this.cards = new Cards();
     }
 
     @Override
     public State takeCard(Card card) {
-        cards.add(card);
-        if (cards.calculateFinalScore() > BLACKJACK) {
-            return new Bust(cards);
-        }
-        return new Hit(cards);
+        throw new CardCannotTakeException();
     }
 
     @Override
     public State takeCards(List<Card> cards) {
-        throw new CardCannotTakeException();
+        this.cards.add(cards);
+        if (this.cards.calculateFinalScore() == BLACKJACK) {
+            return new Blackjack(this.cards);
+        }
+        return new Hit(this.cards);
     }
 
     @Override

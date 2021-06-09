@@ -1,5 +1,7 @@
 package card;
 
+import exception.card.EmptyException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -36,7 +38,7 @@ public class Cards {
         return this.cards.stream()
                 .mapToInt(Card::getScore)
                 .reduce(Integer::sum)
-                .getAsInt();
+                .orElseThrow(EmptyException::new);
 
     }
 
