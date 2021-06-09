@@ -34,9 +34,14 @@ public class DealerTest {
     @Test
     void takeCard() {
         Participant dealer = new Dealer();
+        dealer.takeCards(Arrays.asList(
+                Card.of(Suit.SPADE, Denomination.TWO),
+                Card.of(Suit.CLOVER, Denomination.TWO)
+        ));
+
         dealer.takeCard(Card.of(Suit.HEART, Denomination.TWO));
 
-        assertTrue(dealer.hasCardSizeOf(1));
+        assertTrue(dealer.hasCardSizeOf(3));
     }
 
 
@@ -58,5 +63,23 @@ public class DealerTest {
                 Card.of(Suit.CLOVER, Denomination.SEVEN)));
 
         assertFalse(dealer.isAbleToTake());
+    }
+
+    @DisplayName("처음 상태 확인")
+    @Test
+    void initialState() {
+        Participant dealer = new Dealer();
+
+        assertTrue(dealer.isRunning());
+    }
+
+    @DisplayName("블랙잭 상태 확인")
+    @Test
+    void takeCard21() {
+        Participant dealer = new Dealer();
+        dealer.takeCards(Arrays.asList(Card.of(Suit.HEART, Denomination.ACE),
+                Card.of(Suit.CLOVER, Denomination.TEN)));
+
+        assertFalse(dealer.isRunning());
     }
 }

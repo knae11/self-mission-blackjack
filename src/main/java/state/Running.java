@@ -8,4 +8,9 @@ abstract class Running implements State {
         return false;
     }
 
+    @Override
+    public boolean isRunning() {
+        return true;
+    }
+
 }

@@ -31,4 +31,9 @@ public class InitTurn extends Running {
     public int calculateScore() {
         return cards.calculateScoreAceAsOne();
     }
+
+    @Override
+    public boolean hasCardSizeOf(int size) {
+        return cards.isSizeOf(size);
+    }
 }

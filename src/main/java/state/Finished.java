@@ -27,4 +27,14 @@ abstract class Finished implements State {
     public int calculateScore() {
         return cards.calculateFinalScore();
     }
+
+    @Override
+    public boolean isRunning() {
+        return false;
+    }
+
+    @Override
+    public boolean hasCardSizeOf(int size) {
+        return cards.isSizeOf(size);
+    }
 }

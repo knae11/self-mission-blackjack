@@ -1,15 +1,16 @@
 package participant;
 
 import card.Card;
-import card.Cards;
+import state.InitTurn;
+import state.State;
 
 import java.util.List;
 
 public class Player implements Participant {
-    private final Cards cards;
+    private State state;
 
     public Player(String name, int bettingMoney) {
-        cards = new Cards();
+        this.state = new InitTurn();
     }
 
     public Player() {
@@ -18,20 +19,25 @@ public class Player implements Participant {
 
     @Override
     public void takeCards(List<Card> cards) {
-        this.cards.add(cards);
+        this.state = state.takeCards(cards);
     }
 
     @Override
     public void takeCard(Card value) {
-        this.cards.add(value);
+        this.state = state.takeCard(value);
     }
 
     @Override
     public boolean hasCardSizeOf(int size) {
-        return cards.isSizeOf(size);
+        return state.hasCardSizeOf(size);
     }
 
     public boolean isAbleToTake() {
-        return cards.calculateScoreAceAsOne() <= 21;
+        return state.calculateScore() <= 21;
+    }
+
+    @Override
+    public boolean isRunning() {
+        return state.isRunning();
     }
 }

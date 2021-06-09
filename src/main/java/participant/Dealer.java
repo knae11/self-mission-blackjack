@@ -2,33 +2,40 @@ package participant;
 
 import card.Card;
 import card.Cards;
+import state.InitTurn;
+import state.State;
 
 import java.util.List;
 
 public class Dealer implements Participant {
-    private final Cards cards;
+    private State state;
 
     public Dealer() {
-        this.cards = new Cards();
+        this.state = new InitTurn();
     }
 
     @Override
     public boolean hasCardSizeOf(int size) {
-        return cards.isSizeOf(size);
+        return state.hasCardSizeOf(size);
     }
 
     @Override
     public void takeCards(List<Card> values) {
-        cards.add(values);
+        this.state = state.takeCards(values);
     }
 
     @Override
     public void takeCard(Card value) {
-        cards.add(value);
+        this.state = state.takeCard(value);
     }
 
     @Override
     public boolean isAbleToTake() {
-        return cards.calculateScoreAceAsOne() <= 16;
+        return this.state.calculateScore() <= 16;
+    }
+
+    @Override
+    public boolean isRunning() {
+        return state.isRunning();
     }
 }

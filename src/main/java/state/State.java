@@ -13,4 +13,8 @@ public interface State {
     State takeCards(List<Card> cards);
 
     int calculateScore();
+
+    boolean isRunning();
+
+    boolean hasCardSizeOf(int size);
 }

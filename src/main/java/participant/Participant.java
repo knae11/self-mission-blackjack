@@ -13,4 +13,6 @@ interface Participant {
     void takeCard(Card value);
 
     boolean isAbleToTake();
+
+    boolean isRunning();
 }

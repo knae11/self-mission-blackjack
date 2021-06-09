@@ -35,9 +35,14 @@ public class PlayerTest {
     @Test
     void takeCard() {
         Participant player = new Player();
+        player.takeCards(Arrays.asList(
+                Card.of(Suit.HEART, Denomination.TWO),
+                Card.of(Suit.CLOVER, Denomination.TWO)
+        ));
+
         player.takeCard(Card.of(Suit.HEART, Denomination.TWO));
 
-        assertTrue(player.hasCardSizeOf(1));
+        assertTrue(player.hasCardSizeOf(3));
     }
 
     @DisplayName("카드합계 21, 받을 수 있는지 조건 확인")
@@ -60,5 +65,23 @@ public class PlayerTest {
                 Card.of(Suit.CLOVER, Denomination.NINE)));
 
         assertFalse(player.isAbleToTake());
+    }
+
+    @DisplayName("처음 상태 확인")
+    @Test
+    void initialState() {
+        Player player = new Player();
+
+        assertTrue(player.isRunning());
+    }
+
+    @DisplayName("블랙잭 상태 확인")
+    @Test
+    void takeCard21() {
+        Player player = new Player();
+        player.takeCards(Arrays.asList(Card.of(Suit.HEART, Denomination.ACE),
+                Card.of(Suit.CLOVER, Denomination.TEN)));
+
+        assertFalse(player.isRunning());
     }
 }
