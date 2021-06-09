@@ -6,16 +6,21 @@ import exception.card.CardCannotTakeException;
 
 import java.util.List;
 
-abstract class Finished implements State {
+public class Hit extends Running {
     private final Cards cards;
 
-    protected Finished(Cards cards) {
+    public Hit(Cards cards) {
         this.cards = cards;
     }
 
+
     @Override
     public State takeCard(Card card) {
-        throw new CardCannotTakeException();
+        cards.add(card);
+        if (cards.calculateFinalScore() > 21) {
+            return new Bust(cards);
+        }
+        return new Hit(cards);
     }
 
     @Override
@@ -25,6 +30,6 @@ abstract class Finished implements State {
 
     @Override
     public int calculateScore() {
-        return cards.calculateFinalScore();
+        return cards.calculateScoreAceAsOne();
     }
 }

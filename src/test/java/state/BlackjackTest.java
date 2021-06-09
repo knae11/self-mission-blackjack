@@ -4,7 +4,7 @@ import card.Card;
 import card.Cards;
 import card.Denomination;
 import card.Suit;
-import exception.card.GameIsDoneException;
+import exception.card.CardCannotTakeException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +19,6 @@ public class BlackjackTest {
     @DisplayName("블랙잭 인지 확인")
     @Test
     void isBlackjack() {
-
         Finished blackjack = new Blackjack(new Cards());
 
         assertTrue(blackjack.isBlackjack());
@@ -31,7 +30,7 @@ public class BlackjackTest {
         Finished blackjack = new Blackjack(new Cards());
 
         assertThatThrownBy(() -> blackjack.takeCard(Card.of(Suit.CLOVER, Denomination.TWO)))
-                .isInstanceOf(GameIsDoneException.class);
+                .isInstanceOf(CardCannotTakeException.class);
     }
 
     @DisplayName("카드 점수 계산")

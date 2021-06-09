@@ -1,4 +1,4 @@
-package exception.card;
+package exception;
 
 public class CustomException extends RuntimeException {
     public CustomException(String message) {
