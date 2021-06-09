@@ -32,6 +32,6 @@ public class Player implements Participant {
     }
 
     public boolean isAbleToTake() {
-        return cards.calculateScore() <= 21;
+        return cards.calculateScoreAceAsOne() <= 21;
     }
 }
