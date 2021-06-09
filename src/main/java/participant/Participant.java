@@ -8,5 +8,7 @@ interface Participant {
 
     boolean hasCardSizeOf(int size);
 
-    void takeCards(List<Card> asList);
+    void takeCards(List<Card> values);
+
+    void takeCard(Card value);
 }

@@ -22,7 +22,13 @@ public class Player implements Participant {
     }
 
     @Override
+    public void takeCard(Card value) {
+        this.cards.add(value);
+    }
+
+    @Override
     public boolean hasCardSizeOf(int size) {
         return cards.isSizeOf(size);
     }
+
 }

@@ -17,4 +17,8 @@ public class Cards {
     public void add(List<Card> values) {
         values.forEach(this.cards::add);
     }
+
+    public void add(Card card) {
+        this.cards.add(card);
+    }
 }

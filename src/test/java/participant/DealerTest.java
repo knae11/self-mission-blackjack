@@ -19,7 +19,7 @@ public class DealerTest {
         assertThatCode(Dealer::new).doesNotThrowAnyException();
     }
 
-    @DisplayName("2장 받기")
+    @DisplayName("2장 카드 받기")
     @Test
     void takeTwoCards() {
         Participant dealer = new Dealer();
@@ -27,5 +27,14 @@ public class DealerTest {
                 Card.of(Suit.CLOVER, Denomination.TWO)));
 
         assertTrue(dealer.hasCardSizeOf(2));
+    }
+
+    @DisplayName("1장 카드 받기")
+    @Test
+    void takeCard() {
+        Participant dealer = new Dealer();
+        dealer.takeCard(Card.of(Suit.HEART, Denomination.TWO));
+
+        assertTrue(dealer.hasCardSizeOf(1));
     }
 }

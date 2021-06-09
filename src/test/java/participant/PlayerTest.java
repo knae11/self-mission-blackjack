@@ -21,7 +21,7 @@ public class PlayerTest {
         assertThatCode(() -> new Player("better", 1000)).doesNotThrowAnyException();
     }
 
-    @DisplayName("2장 받기")
+    @DisplayName("2장 카드 받기")
     @Test
     void takeTwoCards() {
         Participant player = new Player();
@@ -29,5 +29,14 @@ public class PlayerTest {
                 Card.of(Suit.CLOVER, Denomination.TWO)));
 
         assertTrue(player.hasCardSizeOf(2));
+    }
+
+    @DisplayName("1장 카드 받기")
+    @Test
+    void takeCard() {
+        Participant player = new Player();
+        player.takeCard(Card.of(Suit.HEART, Denomination.TWO));
+
+        assertTrue(player.hasCardSizeOf(1));
     }
 }

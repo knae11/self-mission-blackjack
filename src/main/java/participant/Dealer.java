@@ -21,4 +21,9 @@ public class Dealer implements Participant {
     public void takeCards(List<Card> values) {
         cards.add(values);
     }
+
+    @Override
+    public void takeCard(Card value) {
+        cards.add(value);
+    }
 }
