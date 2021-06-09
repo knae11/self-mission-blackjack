@@ -2,8 +2,7 @@ package card;
 
 import exception.card.CardInvalidException;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Card {
     private static final Map<String, Card> cache;
@@ -32,4 +31,15 @@ public class Card {
         throw new CardInvalidException();
     }
 
+    public static List<Card> getAllCards() {
+        return new ArrayList(cache.values());
+    }
+
+    @Override
+    public String toString() {
+        return "Card{" +
+                "suit=" + suit +
+                ", denomination=" + denomination +
+                '}';
+    }
 }
