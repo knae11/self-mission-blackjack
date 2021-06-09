@@ -11,4 +11,6 @@ interface Participant {
     void takeCards(List<Card> values);
 
     void takeCard(Card value);
+
+    boolean isAbleToTake();
 }

@@ -26,4 +26,9 @@ public class Dealer implements Participant {
     public void takeCard(Card value) {
         cards.add(value);
     }
+
+    @Override
+    public boolean isAbleToTake() {
+        return cards.calculateScore() <= 16;
+    }
 }

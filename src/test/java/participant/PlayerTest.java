@@ -1,7 +1,6 @@
 package participant;
 
 import card.Card;
-import card.Cards;
 import card.Denomination;
 import card.Suit;
 import org.junit.jupiter.api.DisplayName;
@@ -10,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
@@ -38,5 +38,27 @@ public class PlayerTest {
         player.takeCard(Card.of(Suit.HEART, Denomination.TWO));
 
         assertTrue(player.hasCardSizeOf(1));
+    }
+
+    @DisplayName("카드합계 21, 받을 수 있는지 조건 확인")
+    @Test
+    void isAbleToTakeWhen21() {
+        Participant player = new Player();
+        player.takeCards(Arrays.asList(Card.of(Suit.HEART, Denomination.TEN),
+                Card.of(Suit.CLOVER, Denomination.TWO),
+                Card.of(Suit.CLOVER, Denomination.NINE)));
+
+        assertTrue(player.isAbleToTake());
+    }
+
+    @DisplayName("카드합계 22, 받을 수 있는지 조건 확인")
+    @Test
+    void isAbleToTakeWhen22() {
+        Participant player = new Player();
+        player.takeCards(Arrays.asList(Card.of(Suit.HEART, Denomination.TEN),
+                Card.of(Suit.CLOVER, Denomination.THREE),
+                Card.of(Suit.CLOVER, Denomination.NINE)));
+
+        assertFalse(player.isAbleToTake());
     }
 }

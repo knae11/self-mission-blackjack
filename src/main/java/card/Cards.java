@@ -21,4 +21,12 @@ public class Cards {
     public void add(Card card) {
         this.cards.add(card);
     }
+
+    public int calculateScore() {
+        return this.cards.stream()
+                .mapToInt(Card::getScore)
+                .reduce(Integer::sum)
+                .getAsInt();
+
+    }
 }

@@ -35,7 +35,7 @@ public class Deck {
     }
 
     public Card drawCard() {
-        if(cards.size() <= ZERO){
+        if (cards.size() <= ZERO) {
             throw new DeckEmptyException();
         }
         return cards.remove(cards.size() - 1);

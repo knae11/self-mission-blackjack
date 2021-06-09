@@ -2,7 +2,10 @@ package card;
 
 import exception.card.CardInvalidException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Card {
     private static final Map<String, Card> cache;
@@ -41,5 +44,9 @@ public class Card {
                 "suit=" + suit +
                 ", denomination=" + denomination +
                 '}';
+    }
+
+    public int getScore() {
+        return denomination.getScore();
     }
 }

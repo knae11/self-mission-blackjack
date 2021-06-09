@@ -31,4 +31,7 @@ public class Player implements Participant {
         return cards.isSizeOf(size);
     }
 
+    public boolean isAbleToTake() {
+        return cards.calculateScore() <= 21;
+    }
 }
