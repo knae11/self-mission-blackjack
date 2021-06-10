@@ -8,7 +8,7 @@ public class Bust extends Finished {
     }
 
     @Override
-    public boolean isBlackjack() {
-        return false;
+    public boolean isBust() {
+        return true;
     }
 }

@@ -37,4 +37,19 @@ abstract class Finished implements State {
     public boolean hasCardSizeOf(int size) {
         return cards.isSizeOf(size);
     }
+
+    @Override
+    public boolean isBlackjack() {
+        return false;
+    }
+
+    @Override
+    public boolean isBust() {
+        return false;
+    }
+
+    @Override
+    public boolean isStay() {
+        return false;
+    }
 }

@@ -14,6 +14,14 @@ public class Dealer implements Participant {
         this.state = new InitTurn();
     }
 
+    public Dealer(List<Card> cards) {
+        this.state = new InitTurn(cards);
+    }
+
+    public Dealer(State state) {
+        this.state = state;
+    }
+
     @Override
     public boolean hasCardSizeOf(int size) {
         return state.hasCardSizeOf(size);
@@ -37,5 +45,25 @@ public class Dealer implements Participant {
     @Override
     public boolean isRunning() {
         return state.isRunning();
+    }
+
+    @Override
+    public boolean isBlackjack() {
+        return state.isBlackjack();
+    }
+
+    @Override
+    public boolean isBust() {
+        return state.isBust();
+    }
+
+    @Override
+    public boolean isStay() {
+        return state.isStay();
+    }
+
+    @Override
+    public int calculateScore() {
+        return state.calculateScore();
     }
 }

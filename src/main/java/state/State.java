@@ -7,6 +7,8 @@ import java.util.List;
 public interface State {
 
     boolean isBlackjack();
+    boolean isBust();
+    boolean isStay();
 
     State takeCard(Card card);
 

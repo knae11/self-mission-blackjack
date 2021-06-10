@@ -15,4 +15,12 @@ interface Participant {
     boolean isAbleToTake();
 
     boolean isRunning();
+
+    boolean isBlackjack();
+
+    boolean isBust();
+
+    boolean isStay();
+
+    int calculateScore();
 }

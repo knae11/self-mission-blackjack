@@ -13,4 +13,13 @@ abstract class Running implements State {
         return true;
     }
 
+    @Override
+    public boolean isBust() {
+        return false;
+    }
+
+    @Override
+    public boolean isStay() {
+        return false;
+    }
 }

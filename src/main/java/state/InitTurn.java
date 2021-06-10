@@ -13,6 +13,10 @@ public class InitTurn extends Running {
         this.cards = new Cards();
     }
 
+    public InitTurn(List<Card> cards) {
+        this.cards = new Cards(cards);
+    }
+
     @Override
     public State takeCard(Card card) {
         throw new CardCannotTakeException();

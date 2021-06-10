@@ -13,8 +13,16 @@ public class Player implements Participant {
         this.state = new InitTurn();
     }
 
+    public Player(List<Card> cards) {
+        this.state = new InitTurn(cards);
+    }
+
     public Player() {
         this("any", 0);
+    }
+
+    public Player(State state){
+        this.state = state;
     }
 
     @Override
@@ -39,5 +47,25 @@ public class Player implements Participant {
     @Override
     public boolean isRunning() {
         return state.isRunning();
+    }
+
+    @Override
+    public boolean isBlackjack() {
+        return state.isBlackjack();
+    }
+
+    @Override
+    public boolean isBust() {
+        return state.isBust();
+    }
+
+    @Override
+    public boolean isStay() {
+        return state.isStay();
+    }
+
+    @Override
+    public int calculateScore() {
+        return state.calculateScore();
     }
 }
