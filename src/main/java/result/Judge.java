@@ -12,16 +12,13 @@ public class Judge {
     }
 
     public Result getResultOfPlayer(Player player) {
-        if(!dealer.isBust() && !player.isBust()){
-            return compareScore(player);
-        }
         if(player.isBust()){
             return LOSE;
         }
         if(dealer.isBust()){
             return DRAW;
         }
-        return WIN;
+        return compareScore(player);
     }
 
     private Result compareScore(Player player) {
