@@ -9,12 +9,13 @@ import java.util.List;
 public class Player implements Participant {
     private static final String DEFAULT_NAME = "any";
     private static final int DEFAULT_BETTING_MONEY = 0;
+
     private final int initialBetting;
     private final String name;
 
     private State state;
 
-    private Player(String name, int bettingMoney, State state) {
+    public Player(String name, int bettingMoney, State state) {
         this.name = name;
         this.initialBetting = bettingMoney;
         this.state = state;
@@ -78,6 +79,16 @@ public class Player implements Participant {
     @Override
     public int calculateScore() {
         return state.calculateScore();
+    }
+
+    @Override
+    public boolean isPlayer() {
+        return true;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     public int getInitialBetting() {

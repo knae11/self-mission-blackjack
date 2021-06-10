@@ -1,25 +1,32 @@
 package participant;
 
 import card.Card;
-import card.Cards;
 import state.InitTurn;
 import state.State;
 
 import java.util.List;
 
 public class Dealer implements Participant {
+    private static final String DEFAULT_DEALER = "딜러";
+
     private State state;
+    private final String name;
+
+    public Dealer(String name, State state) {
+        this.name = name;
+        this.state = state;
+    }
 
     public Dealer() {
-        this.state = new InitTurn();
+        this(DEFAULT_DEALER, new InitTurn());
     }
 
     public Dealer(List<Card> cards) {
-        this.state = new InitTurn(cards);
+        this(DEFAULT_DEALER, new InitTurn(cards));
     }
 
     public Dealer(State state) {
-        this.state = state;
+        this(DEFAULT_DEALER, state);
     }
 
     @Override
@@ -65,5 +72,15 @@ public class Dealer implements Participant {
     @Override
     public int calculateScore() {
         return state.calculateScore();
+    }
+
+    @Override
+    public boolean isPlayer() {
+        return false;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }

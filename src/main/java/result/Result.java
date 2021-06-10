@@ -14,4 +14,14 @@ public enum Result {
     public double getBettingRate() {
         return bettingRate;
     }
+
+    public Result reverse() {
+        if (this == WIN) {
+            return LOSE;
+        }
+        if (this == LOSE) {
+            return WIN;
+        }
+        return DRAW;
+    }
 }

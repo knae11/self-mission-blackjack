@@ -4,7 +4,7 @@ import card.Card;
 
 import java.util.List;
 
-interface Participant {
+public interface Participant {
 
     boolean hasCardSizeOf(int size);
 
@@ -23,4 +23,8 @@ interface Participant {
     boolean isStay();
 
     int calculateScore();
+
+    boolean isPlayer();
+
+    String getName();
 }
