@@ -84,4 +84,5 @@ public class PlayerTest {
 
         assertFalse(player.isRunning());
     }
+
 }
