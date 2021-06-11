@@ -100,7 +100,8 @@
 ```text
 <response>
 
-location: /api/blackjack/{roomId}
+Location: /api/blackjack/{roomId}
+StatusCode: 201(CREATED)
 
 body:
 {
