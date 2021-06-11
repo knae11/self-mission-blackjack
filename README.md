@@ -87,4 +87,187 @@
   
 - [ ] Stay 상태는 응답에 따라 만들어 진다. -> Controller, Service 가 해줄 역할
 
-### 2차 스프링 부트를 사용하여 웹, DB 연결
+## 2차 스프링 부트를 사용하여 웹, DB 연결
+1. 방을 만든다. (딜러를 생성) post
+  1-1. 플레이어의 이름과 베팅 금액을 리스트로 보낸다. 
+2. 처음 셋팅 상황을 보여준다. get
+3. 플레이어별로 추가 사항을 물어본다. get, post
+4. 최종 결과를 출력한다.
+### RestAPI 설계
+
+- [ ] 방 생성
+
+- post `/api/blackjack`
+```text
+<response>
+
+location: /api/blackjack/{roomId}
+
+body:
+{
+    roomId: 1
+}
+```
+- [ ] 플레이어 생성
+- post `/api/blackjack/{roomId}/players`
+```text
+<request>
+body: 
+[
+    {
+        "name" : "안녕",
+        "bettingMoney" : 1000
+    },
+    {
+        "name" : "바이",
+        "bettingMoney" : 3000
+    }
+]
+
+<response>
+body: 
+[
+    {
+        "playerId" : 1L,
+        "name" : "안녕",
+        "bettingMoney" : 1000
+    },
+    {
+        "playerId" : 2L,
+        "name" : "바이",
+        "bettingMoney" : 3000
+    }
+]
+```
+- [ ] 전체 플레이어 상태 조회
+- get `/api/blackjack/{roomId}/players`
+```text
+<response>
+body: 
+[
+    {
+        "playerId" : 1L,
+        "name" : "안녕",
+        "bettingMoney" : 1000
+        "cards" : [
+            {
+                "suit" : "c",
+                "denomination" : "2"
+            },
+            {
+                "suit" : "d",
+                "denomination" : "3"
+            }
+        ],
+        "state" : "Hit"
+    },
+    {
+        "playerId" : 2L,
+        "name" : "바이",
+        "bettingMoney" : 3000
+        "cards" : [
+            {
+                "suit" : "s",
+                "denomination" : "2"
+            },
+            {
+                "suit" : "d",
+                "denomination" : "6"
+            }
+        ],
+        "state" : "Hit"
+    }
+]
+```
+- [ ] 딜러 상태조회
+- get `/api/blackjack/{roomId}/dealer`
+```text
+body:
+{
+        "roomId" : 1L,
+        "name" : "딜러"
+        "cards" : [
+            {
+                "suit" : "d",
+                "denomination" : "6"
+            }
+        ],
+        "state" : "Hit"
+    }
+```
+
+- [ ] 개별 플레이어 상태 조회
+- get `/api/blackjack/{roomId}/players/{playerId}`
+```text
+<response>
+body: 
+{
+    "playerId" : 1L,
+    "name" : "안녕",
+    "bettingMoney" : 1000
+    "cards" : [
+        {
+            "suit" : "c",
+            "denomination" : "2"
+        },
+        {
+            "suit" : "d",
+            "denomination" : "3"
+        }
+    ],
+    "state" : "Hit"
+}
+```
+
+- [ ] 카드 받기
+- post `/api/blackjack/{roomId}/players/{playerId}`
+- post `/api/blackjack/{roomId}/dealer`
+```text
+<request>
+body:
+{
+    "isTaking" : true
+}
+
+<response>
+status: ok
+```
+
+- [ ] 전체 결과 조회
+- get `/api/blackjack/{roomId}/results`
+```text
+<response>
+body:
+[
+    {
+        "id" : 1L,
+        "name" : "딜러",
+        "result" : {
+            "win" : 0,
+            "draw" : 1,
+            "lose" : 1
+        }
+        "money" : -1500
+    },
+    {
+        "id" : 1L,
+        "name" : "안녕",
+        "result" : {
+            "win" : 0,
+            "draw" : 1,
+            "lose" : 0
+        }
+        "money" : 1000
+    },
+    {
+        "id" : 2L,
+        "name" : "바이",
+        "result" : {
+            "win" : 1,
+            "draw" : 0,
+            "lose" : 0
+        }
+        "money" : 4500
+    },
+]
+```
