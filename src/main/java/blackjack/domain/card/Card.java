@@ -38,6 +38,10 @@ public class Card {
         return new ArrayList(cache.values());
     }
 
+    public String getCardId() {
+        return suit.getId() + denomination.getId();
+    }
+
     @Override
     public String toString() {
         return "Card{" +

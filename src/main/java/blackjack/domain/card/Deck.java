@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Deck {
     private static final int ZERO = 0;
@@ -32,6 +33,12 @@ public class Deck {
 
     public List<Card> getCards() {
         return new ArrayList<>(cards);
+    }
+
+    public List<String> getCardIds(){
+        return cards.stream()
+                .map(Card::getCardId)
+                .collect(Collectors.toList());
     }
 
     public Card drawCard() {
