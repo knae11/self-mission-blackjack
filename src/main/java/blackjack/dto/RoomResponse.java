@@ -1,7 +1,10 @@
 package blackjack.dto;
 
 public class RoomResponse {
-    private final Long roomId;
+    private Long roomId;
+
+    public RoomResponse() {
+    }
 
     public RoomResponse(Long roomId) {
         this.roomId = roomId;

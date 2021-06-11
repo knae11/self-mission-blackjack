@@ -95,7 +95,7 @@
 4. 최종 결과를 출력한다.
 ### RestAPI 설계
 
-- [ ] 방 생성
+- [x] 방 생성
 - post `/api/blackjack`
 ```text
 <response>

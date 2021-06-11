@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("[인수] API")
 public class BlackjackAcceptanceTest extends AcceptanceTest {
-    @DisplayName("방생성")
+    @DisplayName("방 생성")
     @Test
     void createRoom() {
         ExtractableResponse<Response> response = RestAssured
