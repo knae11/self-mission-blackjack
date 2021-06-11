@@ -61,7 +61,7 @@
 
 ### 해당 객체 또는 역할에게 책임을 할당함으로써 두 객체가 협력
 - 상태를 관리하는 상태객체를 만든다.
-  - [x] 각 participant 는 상태를 가지고 있는다.
+  - [x] 각 domain.participant 는 상태를 가지고 있는다.
   - [x] 상태는 새로운 상태를 반환해준다.
   - [x] 카드관리에 따라 상태가 달라지므로 카드를 상태객체가 관리한다.
   - [x] 진행상태(Hit, InitTurn), 게임끝난상태(블랙잭, Stay, Bust)로 나뉜다.
@@ -159,7 +159,7 @@ body:
                 "denomination" : "3"
             }
         ],
-        "state" : "Hit"
+        "domain.state" : "Hit"
     },
     {
         "playerId" : 2L,
@@ -175,7 +175,7 @@ body:
                 "denomination" : "6"
             }
         ],
-        "state" : "Hit"
+        "domain.state" : "Hit"
     }
 ]
 ```
@@ -192,7 +192,7 @@ body:
                 "denomination" : "6"
             }
         ],
-        "state" : "Hit"
+        "domain.state" : "Hit"
     }
 ```
 - [ ] 개별 플레이어 상태 조회
@@ -214,7 +214,7 @@ body:
             "denomination" : "3"
         }
     ],
-    "state" : "Hit"
+    "domain.state" : "Hit"
 }
 ```
 
@@ -241,7 +241,7 @@ body:
     {
         "id" : 1L,
         "name" : "딜러",
-        "result" : {
+        "domain.result" : {
             "win" : 0,
             "draw" : 1,
             "lose" : 1
@@ -251,7 +251,7 @@ body:
     {
         "id" : 1L,
         "name" : "안녕",
-        "result" : {
+        "domain.result" : {
             "win" : 0,
             "draw" : 1,
             "lose" : 0
@@ -261,7 +261,7 @@ body:
     {
         "id" : 2L,
         "name" : "바이",
-        "result" : {
+        "domain.result" : {
             "win" : 1,
             "draw" : 0,
             "lose" : 0

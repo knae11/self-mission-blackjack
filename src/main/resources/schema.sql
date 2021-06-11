@@ -12,7 +12,7 @@ create table if not exists DEALERS(
     win int not null DEFAULT 0,
     draw int not null DEFAULT 0,
     lose int not null DEFAULT 0,
-    state varchar(16),
+    domain.state varchar(16),
     room_id bigint not null,
     PRIMARY KEY (dealer_id)
 );
@@ -25,7 +25,7 @@ create table if not exists PLAYERS(
     win int not null DEFAULT 0,
     draw int not null DEFAULT 0,
     lose int not null DEFAULT 0,
-    state varchar(16),
+    domain.state varchar(16),
     room_id bigint not null,
     PRIMARY KEY (player_id)
 )
