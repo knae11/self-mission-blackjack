@@ -96,7 +96,6 @@
 ### RestAPI 설계
 
 - [ ] 방 생성
-
 - post `/api/blackjack`
 ```text
 <response>
@@ -105,11 +104,11 @@ location: /api/blackjack/{roomId}
 
 body:
 {
-    roomId: 1
+    "roomId": 1
 }
 ```
-- [ ] 플레이어 생성
-- post `/api/blackjack/{roomId}/players`
+- [ ] 게임 시작 -> 딜러와 플레이어를 생성
+- post `/api/blackjack/{roomId}/start` 
 ```text
 <request>
 body: 
@@ -123,8 +122,9 @@ body:
         "bettingMoney" : 3000
     }
 ]
-
 <response>
+status: ok
+
 body: 
 [
     {
@@ -195,7 +195,6 @@ body:
         "state" : "Hit"
     }
 ```
-
 - [ ] 개별 플레이어 상태 조회
 - get `/api/blackjack/{roomId}/players/{playerId}`
 ```text
