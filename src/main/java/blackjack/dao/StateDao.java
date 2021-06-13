@@ -3,6 +3,7 @@ package blackjack.dao;
 import blackjack.application.ListConvertor;
 import blackjack.domain.participant.Dealer;
 import blackjack.domain.participant.Participant;
+import blackjack.domain.state.State;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
@@ -25,12 +26,4 @@ public class StateDao {
 
     }
 
-    public void create(Participant participant) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("participant_id", participant.getId());
-        params.put("name", participant.getStateToString());
-        params.put("card_ids", ListConvertor.compressCardIds(participant.getCards()));
-
-        stateInsertAction.executeAndReturnKey(params).longValue();
-    }
 }

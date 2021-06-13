@@ -10,6 +10,7 @@ import blackjack.domain.participant.Dealer;
 import blackjack.domain.participant.Player;
 import blackjack.dto.BlackjackGameResponse;
 import blackjack.dto.ParticipantResponse;
+import blackjack.dto.ParticipantsResponse;
 import blackjack.dto.PlayerRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,13 +44,8 @@ public class BlackjackService {
         blackjackGame.initGame();
 
         Dealer createdDealer = participantDao.createDealer(dealer);
-        stateDao.create(createdDealer);
         List<Player> createdPlayers = players.stream()
-                .map(player -> {
-                    Player createdPlayer = participantDao.createPlayer(player);
-                    stateDao.create(createdPlayer);
-                    return createdPlayer;
-                })
+                .map(participantDao::createPlayer)
                 .collect(Collectors.toList());
         Deck createdDeck = deckDao.create(deck);
 
@@ -59,5 +55,17 @@ public class BlackjackService {
 
 
         return new BlackjackGameResponse(gameId, ParticipantResponse.listOf(createdDealer, createdPlayers));
+    }
+
+    public ParticipantsResponse findParticipants(Long gameId) {
+        Long dealerId = blackjackgameDao.findDealerId(gameId);
+        List<Long> playerIds = ListConvertor.depressPlayerIds(blackjackgameDao.findPlayerIds(gameId));
+
+        Dealer dealer = participantDao.findDealerById(dealerId);
+        List<Player> players = playerIds.stream()
+                .map(participantDao::findPlayerById)
+                .collect(Collectors.toList());
+
+        return new ParticipantsResponse(ParticipantResponse.listOf(dealer, players));
     }
 }

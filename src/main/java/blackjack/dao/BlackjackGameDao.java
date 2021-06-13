@@ -1,11 +1,13 @@
 package blackjack.dao;
 
+import blackjack.application.ListConvertor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -27,5 +29,20 @@ public class BlackjackGameDao {
         params.put("player_ids", playerIds);
         params.put("deck_id", deckId);
         return insertAction.executeAndReturnKey(params).longValue();
+    }
+
+    public Long findDealerId(Long gameId) {
+        String sql = "SELECT (dealer_id) FROM blackjackgame WHERE game_id = ?";
+        return jdbcTemplate.queryForObject(sql, Long.class, gameId);
+    }
+
+    public String findPlayerIds(Long gameId) {
+        String sql = "SELECT (player_ids) FROM blackjackgame WHERE game_id = ?";
+        return jdbcTemplate.queryForObject(sql, String.class, gameId);
+    }
+
+    public Long findDeckId(Long gameId) {
+        String sql = "SELECT (deck_id) FROM blackjackgame WHERE game_id = ?";
+        return jdbcTemplate.queryForObject(sql, Long.class, gameId);
     }
 }

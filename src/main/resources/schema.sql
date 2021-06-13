@@ -22,7 +22,7 @@ create table if not exists deck(
 
 create table if not exists state(
     state_id bigint auto_increment not null,
-    participant_id bigint,
+    participant_id bigint not null,
     name varchar(16) not null,
     card_ids varchar(256) not null,
     PRIMARY KEY (state_id)

@@ -175,57 +175,59 @@ body:
         ]
 }
 ```
-- [ ] 전체 상태조회
+- [x] 전체 상태조회
 - get `/api/blackjack/{gameId}/participants`
 ```text
 body:
-[
-    {
-        "participantId" : 1L,
-        "name" : "딜러",
-        "bettingMoney" : 0,
-        "cards" : [
-            {
-                "suit" : "d",
-                "denomination" : "6"
-            }
-        ],
-        "state" : "hit"
-    },
-    {
-        "participantId" : 2L,
-        "name" : "안녕",
-        "bettingMoney" : 1000,
-        "cards" : [
-            {
-                "suit" : "c",
-                "denomination" : "2"
-            },
-            {
-                "suit" : "d",
-                "denomination" : "3"
-            }
-        ],
-        "state" : "hit"
-    },
-    {
-        "participantId" : 3L,
-        "name" : "바이",
-        "bettingMoney" : 3000
-        "cards" : [
-            {
-                "suit" : "s",
-                "denomination" : "2"
-            },
-            {
-                "suit" : "d",
-                "denomination" : "6"
-            }
-        ],
-        "state" : "hit"
-    }
-    
-]
+{
+    "participants":
+    [
+        {
+            "participantId" : 1L,
+            "name" : "딜러",
+            "bettingMoney" : 0,
+            "cards" : [
+                {
+                    "suit" : "d",
+                    "denomination" : "6"
+                }
+            ],
+            "state" : "hit"
+        },
+        {
+            "participantId" : 2L,
+            "name" : "안녕",
+            "bettingMoney" : 1000,
+            "cards" : [
+                {
+                    "suit" : "c",
+                    "denomination" : "2"
+                },
+                {
+                    "suit" : "d",
+                    "denomination" : "3"
+                }
+            ],
+            "state" : "hit"
+        },
+        {
+            "participantId" : 3L,
+            "name" : "바이",
+            "bettingMoney" : 3000
+            "cards" : [
+                {
+                    "suit" : "s",
+                    "denomination" : "2"
+                },
+                {
+                    "suit" : "d",
+                    "denomination" : "6"
+                }
+            ],
+            "state" : "hit"
+        }
+    ]
+}
 ```
 - [ ] 전체 플레이어 상태 조회
 - get `/api/blackjack/{gameId}/players`
