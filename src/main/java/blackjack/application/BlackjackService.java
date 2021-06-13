@@ -39,14 +39,17 @@ public class BlackjackService {
                 .map(request -> new Player(request.getName(), request.getBettingMoney()))
                 .collect(Collectors.toList());
         Dealer dealer = new Dealer();
-
         BlackjackGame blackjackGame = new BlackjackGame(dealer, players, deck);
         blackjackGame.initGame();
 
-
         Dealer createdDealer = participantDao.createDealer(dealer);
+        stateDao.create(createdDealer);
         List<Player> createdPlayers = players.stream()
-                .map(participantDao::createPlayer)
+                .map(player -> {
+                    Player createdPlayer = participantDao.createPlayer(player);
+                    stateDao.create(createdPlayer);
+                    return createdPlayer;
+                })
                 .collect(Collectors.toList());
         Deck createdDeck = deckDao.create(deck);
 
