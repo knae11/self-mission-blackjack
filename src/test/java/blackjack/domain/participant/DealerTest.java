@@ -39,7 +39,7 @@ public class DealerTest {
                 Card.of(Suit.CLOVER, Denomination.TWO)
         ));
 
-        dealer.takeCard(true, Card.of(Suit.HEART, Denomination.TWO));
+        dealer.takeCardForPlayer(true, Card.of(Suit.HEART, Denomination.TWO));
 
         assertTrue(dealer.hasCardSizeOf(3));
     }
@@ -52,7 +52,7 @@ public class DealerTest {
         dealer.takeCards(Arrays.asList(Card.of(Suit.HEART, Denomination.TEN),
                 Card.of(Suit.CLOVER, Denomination.SIX)));
 
-        assertTrue(dealer.isAbleToTake());
+        assertTrue(dealer.isRunning());
     }
 
     @DisplayName("카드합계 17, 받을 수 있는지 조건 확인")
@@ -62,7 +62,7 @@ public class DealerTest {
         dealer.takeCards(Arrays.asList(Card.of(Suit.HEART, Denomination.TEN),
                 Card.of(Suit.CLOVER, Denomination.SEVEN)));
 
-        assertFalse(dealer.isAbleToTake());
+        assertFalse(dealer.isRunning());
     }
 
     @DisplayName("처음 상태 확인")

@@ -14,7 +14,7 @@ public class Hit extends Running {
     }
 
     @Override
-    public State takeCard(boolean acceptance, Card card) {
+    public State takeCardForPlayer(boolean acceptance, Card card) {
         if (acceptance) {
             cards.add(card);
             return determineState();
@@ -22,16 +22,27 @@ public class Hit extends Running {
         return new Stay(cards);
     }
 
+    @Override
+    public State takeCardForDealer(Card card) {
+        cards.add(card);
+        return new Stay(cards);
+    }
+
+    @Override
+    public State takeCardsForPlayer(List<Card> cards) {
+        throw new CardCannotTakeException();
+    }
+
+    @Override
+    public State takeCardsForDealer(List<Card> cards) {
+        throw new CardCannotTakeException();
+    }
+
     private State determineState() {
         if (cards.calculateFinalScore() > BLACKJACK) {
             return new Bust(cards);
         }
         return new Hit(cards);
-    }
-
-    @Override
-    public State takeCards(boolean isPlayer, List<Card> cards) {
-        throw new CardCannotTakeException();
     }
 
     @Override

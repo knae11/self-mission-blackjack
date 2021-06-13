@@ -40,7 +40,7 @@ public class PlayerTest {
                 Card.of(Suit.CLOVER, Denomination.TWO)
         ));
 
-        player.takeCard(true, Card.of(Suit.HEART, Denomination.TWO));
+        player.takeCardForPlayer(true, Card.of(Suit.HEART, Denomination.TWO));
 
         assertTrue(player.hasCardSizeOf(3));
     }
@@ -53,7 +53,7 @@ public class PlayerTest {
                 Card.of(Suit.CLOVER, Denomination.TWO),
                 Card.of(Suit.CLOVER, Denomination.NINE)));
 
-        assertTrue(player.isAbleToTake());
+        assertTrue(player.isRunning());
     }
 
     @DisplayName("카드합계 22, 받을 수 있는지 조건 확인")
@@ -64,7 +64,7 @@ public class PlayerTest {
                 Card.of(Suit.CLOVER, Denomination.THREE),
                 Card.of(Suit.CLOVER, Denomination.NINE)));
 
-        assertFalse(player.isAbleToTake());
+        assertFalse(player.isRunning());
     }
 
     @DisplayName("처음 상태 확인")

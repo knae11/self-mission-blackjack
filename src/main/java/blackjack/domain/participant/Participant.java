@@ -11,9 +11,9 @@ public interface Participant {
 
     State takeCards(List<Card> values);
 
-    State takeCard(boolean acceptance, Card value);
+    State takeCardForPlayer(boolean acceptance, Card value);
 
-    boolean isAbleToTake();
+    State takeCardForDealer(Card value);
 
     boolean isRunning();
 

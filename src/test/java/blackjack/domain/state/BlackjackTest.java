@@ -29,7 +29,7 @@ public class BlackjackTest {
     void takeCardException() {
         Finished blackjack = new Blackjack(new Cards());
 
-        assertThatThrownBy(() -> blackjack.takeCard(true, Card.of(Suit.CLOVER, Denomination.TWO)))
+        assertThatThrownBy(() -> blackjack.takeCardForPlayer(true, Card.of(Suit.CLOVER, Denomination.TWO)))
                 .isInstanceOf(CardCannotTakeException.class);
     }
 

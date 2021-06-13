@@ -5,7 +5,6 @@ import blackjack.domain.card.Cards;
 import blackjack.domain.card.Denomination;
 import blackjack.domain.card.Suit;
 import blackjack.domain.participant.Dealer;
-import blackjack.domain.participant.Participant;
 import blackjack.domain.participant.Player;
 import blackjack.domain.state.Blackjack;
 import blackjack.domain.state.Stay;
@@ -24,11 +23,12 @@ public class ResultBoardTest {
     @Test
     void createResultBoard() {
         List<Card> cards = Arrays.asList(Card.of(Suit.HEART, Denomination.TWO));
-        List<Participant> participants = Arrays.asList(new Dealer(cards),
+        Dealer dealer = new Dealer(cards);
+        List<Player> players = Arrays.asList(
                 new Player(cards),
                 new Player(cards));
 
-        ResultBoard resultBoard = new ResultBoard(participants);
+        ResultBoard resultBoard = new ResultBoard(dealer, players);
         assertThat(resultBoard.getResults()).hasSize(3);
     }
 
@@ -40,12 +40,13 @@ public class ResultBoardTest {
                 Card.of(Suit.DIAMOND, Denomination.ACE));
         List<Card> p2Cards = Arrays.asList(Card.of(Suit.HEART, Denomination.THREE),
                 Card.of(Suit.SPADE, Denomination.TWO));
-        List<Participant> participants = Arrays.asList(
-                new Dealer(new Stay(new Cards(dealerCards))),
+
+        Dealer dealer = new Dealer(new Stay(new Cards(dealerCards)));
+        List<Player> players = Arrays.asList(
                 new Player("배럴", 1000, new Blackjack(new Cards(p1Cards))),
                 new Player("bet", 1000, new Stay(new Cards(p2Cards))));
 
-        ResultBoard resultBoard = new ResultBoard(participants);
+        ResultBoard resultBoard = new ResultBoard(dealer, players);
         List<ParticipantResult> results = resultBoard.getResults();
         assertThat(results).hasSize(3);
         assertThat(results.get(0).getName()).isEqualTo("딜러");

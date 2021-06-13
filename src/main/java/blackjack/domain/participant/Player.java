@@ -39,23 +39,24 @@ public class Player implements Participant {
 
     @Override
     public State takeCards(List<Card> cards) {
-        this.state = state.takeCards(isPlayer(), cards);
+        this.state = state.takeCardsForPlayer(cards);
         return state;
     }
 
     @Override
-    public State takeCard(boolean acceptance, Card value) {
-        this.state = state.takeCard(acceptance, value);
+    public State takeCardForPlayer(boolean acceptance, Card value) {
+        this.state = state.takeCardForPlayer(acceptance, value);
         return state;
+    }
+
+    @Override
+    public State takeCardForDealer(Card value) {
+        throw new IllegalArgumentException();
     }
 
     @Override
     public boolean hasCardSizeOf(int size) {
         return state.hasCardSizeOf(size);
-    }
-
-    public boolean isAbleToTake() {
-        return state.calculateScore() <= 21;
     }
 
     @Override
@@ -92,7 +93,6 @@ public class Player implements Participant {
     public String getName() {
         return name;
     }
-
 
     public int getInitialBetting() {
         return initialBetting;

@@ -35,19 +35,19 @@ public class Dealer implements Participant {
 
     @Override
     public State takeCards(List<Card> values) {
-        this.state = state.takeCards(isPlayer(), values);
+        this.state = state.takeCardsForDealer(values);
         return state;
     }
 
     @Override
-    public State takeCard(boolean acceptance, Card value) {
-        this.state = state.takeCard(acceptance, value);
-        return state;
+    public State takeCardForPlayer(boolean acceptance, Card value) {
+        throw new IllegalArgumentException();
     }
 
     @Override
-    public boolean isAbleToTake() {
-        return this.state.calculateScore() <= 16;
+    public State takeCardForDealer(Card value) {
+        this.state = state.takeCardForDealer(value);
+        return state;
     }
 
     @Override

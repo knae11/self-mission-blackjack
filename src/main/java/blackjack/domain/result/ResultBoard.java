@@ -11,31 +11,14 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ResultBoard {
-    private final List<Participant> participants;
     private final Dealer dealer;
     private final List<Player> players;
 
-    public ResultBoard(List<Participant> participants) {
-        this.participants = participants;
-        this.players = extractPlayers(participants);
-        this.dealer = extractDealer(participants);
-    }
 
-    private Dealer extractDealer(List<Participant> participants) {
-        return participants.stream()
-                .filter(participant -> !participant.isPlayer())
-                .map(participant -> (Dealer) participant)
-                .findFirst()
-                .get();
+    public ResultBoard(Dealer dealer, List<Player> players){
+        this.dealer = dealer;
+        this.players = players;
     }
-
-    private List<Player> extractPlayers(List<Participant> participants) {
-        return participants.stream()
-                .filter(Participant::isPlayer)
-                .map(participant -> (Player) participant)
-                .collect(Collectors.toList());
-    }
-
 
     public List<ParticipantResult> getResults() {
         final Map<Player, Result> playerResults = getPlayerResults();

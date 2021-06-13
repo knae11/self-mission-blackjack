@@ -12,9 +12,13 @@ public interface State {
 
     boolean isStay();
 
-    State takeCard(boolean acceptance, Card card);
+    State takeCardForPlayer(boolean acceptance, Card card);
 
-    State takeCards(boolean isPlayer, List<Card> cards);
+    State takeCardForDealer(Card card);
+
+    State takeCardsForPlayer(List<Card> cards);
+
+    State takeCardsForDealer(List<Card> cards);
 
     int calculateScore();
 

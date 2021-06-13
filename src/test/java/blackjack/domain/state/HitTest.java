@@ -33,7 +33,7 @@ public class HitTest {
                 Card.of(Suit.HEART, Denomination.THREE));
         Running hit = new Hit(new Cards(cardValues));
 
-        assertThat(hit.takeCard(true, Card.of(Suit.HEART, Denomination.EIGHT)))
+        assertThat(hit.takeCardForPlayer(true, Card.of(Suit.HEART, Denomination.EIGHT)))
                 .isInstanceOf(Hit.class);
     }
 
@@ -45,7 +45,7 @@ public class HitTest {
                 Card.of(Suit.HEART, Denomination.THREE));
         Running hit = new Hit(new Cards(cardValues));
 
-        assertThat(hit.takeCard(true, Card.of(Suit.HEART, Denomination.NINE)))
+        assertThat(hit.takeCardForPlayer(true, Card.of(Suit.HEART, Denomination.NINE)))
                 .isInstanceOf(Bust.class);
     }
 
@@ -57,7 +57,7 @@ public class HitTest {
                 Card.of(Suit.CLOVER, Denomination.TEN),
                 Card.of(Suit.HEART, Denomination.THREE));
 
-        assertThatThrownBy(() -> hit.takeCards(true, cardValues))
+        assertThatThrownBy(() -> hit.takeCardsForPlayer(cardValues))
                 .isInstanceOf(CardCannotTakeException.class);
     }
 
