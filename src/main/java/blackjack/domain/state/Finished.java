@@ -14,12 +14,12 @@ abstract class Finished implements State {
     }
 
     @Override
-    public State takeCard(Card card) {
+    public State takeCard(boolean acceptance, Card card) {
         throw new CardCannotTakeException();
     }
 
     @Override
-    public State takeCards(List<Card> cards) {
+    public State takeCards(boolean isPlayer, List<Card> cards) {
         throw new CardCannotTakeException();
     }
 

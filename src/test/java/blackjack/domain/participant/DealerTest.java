@@ -39,7 +39,7 @@ public class DealerTest {
                 Card.of(Suit.CLOVER, Denomination.TWO)
         ));
 
-        dealer.takeCard(Card.of(Suit.HEART, Denomination.TWO));
+        dealer.takeCard(true, Card.of(Suit.HEART, Denomination.TWO));
 
         assertTrue(dealer.hasCardSizeOf(3));
     }

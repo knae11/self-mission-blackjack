@@ -4,20 +4,20 @@ import blackjack.domain.card.Card;
 import blackjack.domain.card.Cards;
 import blackjack.domain.card.Denomination;
 import blackjack.domain.card.Suit;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
 import blackjack.domain.participant.Dealer;
 import blackjack.domain.participant.Player;
 import blackjack.domain.state.Blackjack;
 import blackjack.domain.state.Bust;
 import blackjack.domain.state.Stay;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static blackjack.domain.result.Result.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("[도메인] 결과판정")
 public class JudgeTest {
@@ -28,7 +28,7 @@ public class JudgeTest {
 
         @DisplayName("딜러 Stay, 플레이어 Stay(d:20, p:19) -> 진다.")
         @Test
-        void judgeBothStay () {
+        void judgeBothStay() {
             List<Card> dealerCards = Arrays.asList(
                     Card.of(Suit.CLOVER, Denomination.TEN),
                     Card.of(Suit.HEART, Denomination.TEN));
@@ -45,7 +45,7 @@ public class JudgeTest {
 
         @DisplayName("딜러 Blackjack, 플레이어 Stay(d:21, p:19) -> 진다.")
         @Test
-        void judge () {
+        void judge() {
             List<Card> dealerCards = Arrays.asList(
                     Card.of(Suit.CLOVER, Denomination.TEN),
                     Card.of(Suit.HEART, Denomination.ACE));
@@ -62,7 +62,7 @@ public class JudgeTest {
 
         @DisplayName("딜러 Stay, 플레이어 Blackjack (d:20, p:21) -> 이긴다.")
         @Test
-        void judgeDealerStayAndPlayerBlackjack () {
+        void judgeDealerStayAndPlayerBlackjack() {
             List<Card> dealerCards = Arrays.asList(
                     Card.of(Suit.CLOVER, Denomination.TEN),
                     Card.of(Suit.HEART, Denomination.TEN));
@@ -76,9 +76,10 @@ public class JudgeTest {
 
             assertThat(judge.getResultOfPlayer(player)).isEqualTo(WIN);
         }
+
         @DisplayName("딜러 Blackjack, 플레이어 Blackjack (d:21, p:21) -> 비긴다.")
         @Test
-        void judgeBothBlackjack () {
+        void judgeBothBlackjack() {
             List<Card> dealerCards = Arrays.asList(
                     Card.of(Suit.CLOVER, Denomination.TEN),
                     Card.of(Suit.DIAMOND, Denomination.ACE));
@@ -157,7 +158,7 @@ public class JudgeTest {
 
     @DisplayName("플레이어가 Bust 인 경우에는")
     @Nested
-    class ContextPlayerBust{
+    class ContextPlayerBust {
         @DisplayName("딜러 Stay, 플레이어 Bust(d:20, p:22) -> 진다.")
         @Test
         void judgeDealerStayAndPlayerBust() {

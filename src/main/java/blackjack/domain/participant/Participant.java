@@ -1,6 +1,7 @@
 package blackjack.domain.participant;
 
 import blackjack.domain.card.Card;
+import blackjack.domain.state.State;
 
 import java.util.List;
 
@@ -8,9 +9,9 @@ public interface Participant {
 
     boolean hasCardSizeOf(int size);
 
-    void takeCards(List<Card> values);
+    State takeCards(List<Card> values);
 
-    void takeCard(Card value);
+    State takeCard(boolean acceptance, Card value);
 
     boolean isAbleToTake();
 
@@ -27,4 +28,5 @@ public interface Participant {
     boolean isPlayer();
 
     String getName();
+
 }

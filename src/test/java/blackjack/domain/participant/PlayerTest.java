@@ -40,7 +40,7 @@ public class PlayerTest {
                 Card.of(Suit.CLOVER, Denomination.TWO)
         ));
 
-        player.takeCard(Card.of(Suit.HEART, Denomination.TWO));
+        player.takeCard(true, Card.of(Suit.HEART, Denomination.TWO));
 
         assertTrue(player.hasCardSizeOf(3));
     }

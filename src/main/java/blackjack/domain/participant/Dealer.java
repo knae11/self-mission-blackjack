@@ -8,9 +8,8 @@ import java.util.List;
 
 public class Dealer implements Participant {
     private static final String DEFAULT_DEALER = "딜러";
-
-    private State state;
     private final String name;
+    private State state;
 
     public Dealer(String name, State state) {
         this.name = name;
@@ -35,13 +34,15 @@ public class Dealer implements Participant {
     }
 
     @Override
-    public void takeCards(List<Card> values) {
-        this.state = state.takeCards(values);
+    public State takeCards(List<Card> values) {
+        this.state = state.takeCards(isPlayer(), values);
+        return state;
     }
 
     @Override
-    public void takeCard(Card value) {
-        this.state = state.takeCard(value);
+    public State takeCard(boolean acceptance, Card value) {
+        this.state = state.takeCard(acceptance, value);
+        return state;
     }
 
     @Override

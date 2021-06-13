@@ -1,12 +1,12 @@
 package blackjack.domain.result;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import blackjack.domain.participant.Dealer;
 import blackjack.domain.participant.Player;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static blackjack.domain.result.Result.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("[도메인] 베팅금액계산기")
 public class BettingCalculatorTest {

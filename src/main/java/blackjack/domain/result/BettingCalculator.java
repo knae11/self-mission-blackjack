@@ -18,7 +18,7 @@ public class BettingCalculator {
         return finalPlayerMoney;
     }
 
-    public int getDealerMoney(){
+    public int getDealerMoney() {
         return dealerMoney;
     }
 

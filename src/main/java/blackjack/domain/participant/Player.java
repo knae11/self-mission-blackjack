@@ -38,13 +38,15 @@ public class Player implements Participant {
     }
 
     @Override
-    public void takeCards(List<Card> cards) {
-        this.state = state.takeCards(cards);
+    public State takeCards(List<Card> cards) {
+        this.state = state.takeCards(isPlayer(), cards);
+        return state;
     }
 
     @Override
-    public void takeCard(Card value) {
-        this.state = state.takeCard(value);
+    public State takeCard(boolean acceptance, Card value) {
+        this.state = state.takeCard(acceptance, value);
+        return state;
     }
 
     @Override
@@ -90,6 +92,7 @@ public class Player implements Participant {
     public String getName() {
         return name;
     }
+
 
     public int getInitialBetting() {
         return initialBetting;

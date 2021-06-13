@@ -35,7 +35,7 @@ public class InitTurnTest {
                 Card.of(Suit.HEART, Denomination.KING));
 
 
-        assertThat(initTurn.takeCards(cardValues))
+        assertThat(initTurn.takeCards(true, cardValues))
                 .isInstanceOf(Hit.class);
     }
 
@@ -47,7 +47,7 @@ public class InitTurnTest {
                 Card.of(Suit.CLOVER, Denomination.TEN),
                 Card.of(Suit.HEART, Denomination.ACE));
 
-        assertThat(initTurn.takeCards(cardValues))
+        assertThat(initTurn.takeCards(true, cardValues))
                 .isInstanceOf(Blackjack.class);
     }
 
@@ -56,7 +56,7 @@ public class InitTurnTest {
     void takeCardsException() {
         Running initTurn = new InitTurn();
 
-        assertThatThrownBy(() -> initTurn.takeCard(Card.of(Suit.CLOVER, Denomination.TEN)))
+        assertThatThrownBy(() -> initTurn.takeCard(true, Card.of(Suit.CLOVER, Denomination.TEN)))
                 .isInstanceOf(CardCannotTakeException.class);
     }
 

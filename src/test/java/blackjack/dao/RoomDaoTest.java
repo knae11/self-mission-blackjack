@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -26,7 +24,7 @@ class RoomDaoTest {
     private RoomDao roomDao;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         this.roomDao = new RoomDao(jdbcTemplate, dataSource);
     }
 

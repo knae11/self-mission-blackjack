@@ -23,7 +23,7 @@ public class ParticipantResult {
         return new ParticipantResult(name, Arrays.asList(resultValue), moneyResult);
     }
 
-    public static ParticipantResult createDealer(String name, List<Result> resultValues, int moneyResult){
+    public static ParticipantResult createDealer(String name, List<Result> resultValues, int moneyResult) {
         return new ParticipantResult(name, reverse(resultValues), moneyResult);
     }
 
@@ -31,12 +31,6 @@ public class ParticipantResult {
         return resultValues.stream()
                 .map(Result::reverse)
                 .collect(Collectors.toList());
-    }
-
-    private void setResults(List<Result> resultValues) {
-        this.results.put(WIN, countResult(resultValues, WIN));
-        this.results.put(DRAW, countResult(resultValues, DRAW));
-        this.results.put(LOSE, countResult(resultValues, LOSE));
     }
 
     private int countResult(List<Result> resultValues, Result resultState) {
@@ -51,6 +45,12 @@ public class ParticipantResult {
 
     public HashMap<Result, Integer> getResults() {
         return results;
+    }
+
+    private void setResults(List<Result> resultValues) {
+        this.results.put(WIN, countResult(resultValues, WIN));
+        this.results.put(DRAW, countResult(resultValues, DRAW));
+        this.results.put(LOSE, countResult(resultValues, LOSE));
     }
 
     public int getMoneyResult() {

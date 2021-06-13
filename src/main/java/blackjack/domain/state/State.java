@@ -7,12 +7,14 @@ import java.util.List;
 public interface State {
 
     boolean isBlackjack();
+
     boolean isBust();
+
     boolean isStay();
 
-    State takeCard(Card card);
+    State takeCard(boolean acceptance, Card card);
 
-    State takeCards(List<Card> cards);
+    State takeCards(boolean isPlayer, List<Card> cards);
 
     int calculateScore();
 

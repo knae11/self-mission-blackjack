@@ -35,7 +35,7 @@ public class Deck {
         return new ArrayList<>(cards);
     }
 
-    public List<String> getCardIds(){
+    public List<String> getCardIds() {
         return cards.stream()
                 .map(Card::getCardId)
                 .collect(Collectors.toList());

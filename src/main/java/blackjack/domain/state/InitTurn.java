@@ -18,15 +18,18 @@ public class InitTurn extends Running {
     }
 
     @Override
-    public State takeCard(Card card) {
+    public State takeCard(boolean acceptance, Card card) {
         throw new CardCannotTakeException();
     }
 
     @Override
-    public State takeCards(List<Card> cards) {
+    public State takeCards(boolean isPlayer, List<Card> cards) {
         this.cards.add(cards);
         if (this.cards.calculateFinalScore() == BLACKJACK) {
             return new Blackjack(this.cards);
+        }
+        if (!isPlayer && calculateScore() > 16) {
+            return new Stay(this.cards);
         }
         return new Hit(this.cards);
     }
