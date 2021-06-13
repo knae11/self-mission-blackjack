@@ -8,6 +8,7 @@ import java.util.List;
 
 public class Dealer implements Participant {
     private static final String DEFAULT_DEALER = "딜러";
+
     private final String name;
     private State state;
 

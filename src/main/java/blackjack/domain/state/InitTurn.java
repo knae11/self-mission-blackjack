@@ -39,6 +39,9 @@ public class InitTurn extends Running {
     @Override
     public State takeCardsForDealer(List<Card> cards) {
         this.cards.add(cards);
+        if (this.cards.calculateFinalScore() == BLACKJACK) {
+            return new Blackjack(this.cards);
+        }
         if (calculateScore() > 16) {
             return new Stay(this.cards);
         }

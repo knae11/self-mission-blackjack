@@ -50,8 +50,8 @@ public class PlayerTest {
     void isAbleToTakeWhen21() {
         Participant player = new Player();
         player.takeCards(Arrays.asList(Card.of(Suit.HEART, Denomination.TEN),
-                Card.of(Suit.CLOVER, Denomination.TWO),
-                Card.of(Suit.CLOVER, Denomination.NINE)));
+                Card.of(Suit.CLOVER, Denomination.TWO)));
+        player.takeCardForPlayer(true, Card.of(Suit.DIAMOND, Denomination.NINE));
 
         assertTrue(player.isRunning());
     }
@@ -61,8 +61,8 @@ public class PlayerTest {
     void isAbleToTakeWhen22() {
         Participant player = new Player();
         player.takeCards(Arrays.asList(Card.of(Suit.HEART, Denomination.TEN),
-                Card.of(Suit.CLOVER, Denomination.THREE),
-                Card.of(Suit.CLOVER, Denomination.NINE)));
+                Card.of(Suit.CLOVER, Denomination.THREE)));
+        player.takeCardForPlayer(true, Card.of(Suit.CLOVER, Denomination.NINE));
 
         assertFalse(player.isRunning());
     }

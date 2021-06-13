@@ -10,8 +10,8 @@ public class Player implements Participant {
     private static final String DEFAULT_NAME = "any";
     private static final int DEFAULT_BETTING_MONEY = 0;
 
-    private final int initialBetting;
     private final String name;
+    private final int initialBetting;
 
     private State state;
 

@@ -9,15 +9,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Repository
-public class RoomDao {
+public class BlackjackGameDao {
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert simpleJdbcInsert;
 
-    public RoomDao(JdbcTemplate jdbcTemplate, DataSource dataSource) {
+    public BlackjackGameDao(JdbcTemplate jdbcTemplate, DataSource dataSource) {
         this.jdbcTemplate = jdbcTemplate;
         this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
-                .withTableName("ROOMS")
-                .usingGeneratedKeyColumns("room_id");
+                .withTableName("blackjackgame")
+                .usingGeneratedKeyColumns("game_id");
     }
 
     public Long createRoom(String deck) {
