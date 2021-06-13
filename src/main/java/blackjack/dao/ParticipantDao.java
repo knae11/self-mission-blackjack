@@ -70,7 +70,7 @@ public class ParticipantDao {
     public Dealer findDealerById(Long dealerId) {
         String sql = "SELECT name, card_ids FROM state WHERE participant_id = ? ";
         State state = jdbcTemplate.queryForObject(sql, stateRowMapper(), dealerId);
-        return new Dealer(state);
+        return new Dealer(dealerId, state);
     }
 
     private RowMapper<State> stateRowMapper() {

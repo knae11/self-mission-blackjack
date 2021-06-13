@@ -2,6 +2,7 @@ package blackjack.dto;
 
 import blackjack.domain.card.Card;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +27,14 @@ public class CardResponse {
         return cards.stream()
                 .map(card-> new CardResponse(card.getCardId()))
                 .collect(Collectors.toList());
+    }
+
+    public static List<CardResponse> dealerListOf(List<Card> cards) {
+        List<CardResponse> cardResponses = new ArrayList<>();
+        for (int i = 1; i < cards.size() ; i++) {
+            cardResponses.add(new CardResponse(cards.get(i).getCardId()));
+        }
+        return cardResponses;
     }
 
     public String getSuit() {

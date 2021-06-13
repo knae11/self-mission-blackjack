@@ -1,10 +1,7 @@
 package blackjack.ui;
 
 import blackjack.application.BlackjackService;
-import blackjack.dto.BlackjackGameRequest;
-import blackjack.dto.BlackjackGameResponse;
-import blackjack.dto.ParticipantsResponse;
-import blackjack.dto.PlayerRequest;
+import blackjack.dto.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,5 +32,19 @@ public class BlackjackController {
         ParticipantsResponse participantsResponse = blackjackService.findParticipants(gameId);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(participantsResponse);
+    }
+
+    @GetMapping("/{gameId}/players")
+    public ResponseEntity<ParticipantsResponse> findPlayers(@PathVariable Long gameId) {
+        ParticipantsResponse participantsResponse = blackjackService.findPlayers(gameId);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(participantsResponse);
+    }
+
+    @GetMapping("/{gameId}/dealer")
+    public ResponseEntity<DealerResponse> findDealer(@PathVariable Long gameId) {
+        DealerResponse dealerResponse = blackjackService.findDealer(gameId);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(dealerResponse);
     }
 }

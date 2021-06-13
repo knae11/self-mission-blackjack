@@ -33,6 +33,12 @@ public class ParticipantResponse {
                 .collect(Collectors.toList());
     }
 
+    public static List<ParticipantResponse> listOf(List<Player> players) {
+        return players.stream()
+                .map(participant -> new ParticipantResponse(participant.getId(), participant.getName(), participant.getInitialBetting(), CardResponse.listOf(participant.getCards()), participant.getStateToString()))
+                .collect(Collectors.toList());
+    }
+
     public Long getParticipantId() {
         return participantId;
     }

@@ -8,10 +8,7 @@ import blackjack.domain.BlackjackGame;
 import blackjack.domain.card.Deck;
 import blackjack.domain.participant.Dealer;
 import blackjack.domain.participant.Player;
-import blackjack.dto.BlackjackGameResponse;
-import blackjack.dto.ParticipantResponse;
-import blackjack.dto.ParticipantsResponse;
-import blackjack.dto.PlayerRequest;
+import blackjack.dto.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,5 +64,23 @@ public class BlackjackService {
                 .collect(Collectors.toList());
 
         return new ParticipantsResponse(ParticipantResponse.listOf(dealer, players));
+    }
+
+    public ParticipantsResponse findPlayers(Long gameId) {
+        List<Long> playerIds = ListConvertor.depressPlayerIds(blackjackgameDao.findPlayerIds(gameId));
+
+        List<Player> players = playerIds.stream()
+                .map(participantDao::findPlayerById)
+                .collect(Collectors.toList());
+
+        return new ParticipantsResponse(ParticipantResponse.listOf(players));
+    }
+
+    public DealerResponse findDealer(Long gameId) {
+        Long dealerId = blackjackgameDao.findDealerId(gameId);
+
+        Dealer dealer = participantDao.findDealerById(dealerId);
+
+        return DealerResponse.of(dealer);
     }
 }

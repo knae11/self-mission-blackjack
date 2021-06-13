@@ -12,33 +12,27 @@ public class Dealer implements Participant {
     private static final int DEFAULT_INITIAL_BETTING = 0;
 
     private final Long id;
-    private final String name;
     private State state;
 
-    public Dealer(Long id, String name, State state) {
+    public Dealer(Long id, State state) {
         this.id = id;
-        this.name = name;
         this.state = state;
     }
 
-    public Dealer(String name, State state) {
-        this(null, name, state);
-    }
-
     public Dealer() {
-        this(DEFAULT_DEALER, new InitTurn());
+        this(null, new InitTurn());
     }
 
     public Dealer(List<Card> cards) {
-        this(DEFAULT_DEALER, new InitTurn(cards));
+        this(null, new InitTurn(cards));
     }
 
     public Dealer(State state) {
-        this(DEFAULT_DEALER, state);
+        this(null, state);
     }
 
     public Dealer(Long id, Dealer dealer) {
-        this(id, dealer.name, dealer.state);
+        this(id, dealer.state);
     }
 
     @Override
@@ -95,7 +89,7 @@ public class Dealer implements Participant {
 
     @Override
     public String getName() {
-        return name;
+        return DEFAULT_DEALER;
     }
 
     @Override

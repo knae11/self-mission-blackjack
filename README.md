@@ -133,6 +133,10 @@ body:
                 "bettingMoney" : 0,
                 "cards" : [
                     {
+                        "suit" : "s",
+                        "denomination" : "6"
+                    },
+                    {
                         "suit" : "d",
                         "denomination" : "6"
                     }
@@ -188,6 +192,10 @@ body:
             "bettingMoney" : 0,
             "cards" : [
                 {
+                    "suit" : "s",
+                    "denomination" : "6"
+                },
+                {
                     "suit" : "d",
                     "denomination" : "6"
                 }
@@ -234,42 +242,45 @@ body:
 ```text
 <response>
 body: 
-[
-    {
-        "participantId" : 2L,
-        "name" : "안녕",
-        "bettingMoney" : 1000,
-        "cards" : [
-            {
-                "suit" : "c",
-                "denomination" : "2"
-            },
-            {
-                "suit" : "d",
-                "denomination" : "3"
-            }
-        ],
-        "state" : "hit"
-    },
-    {
-        "participantId" : 3L,
-        "name" : "바이",
-        "bettingMoney" : 3000,
-        "cards" : [
-            {
-                "suit" : "s",
-                "denomination" : "2"
-            },
-            {
-                "suit" : "d",
-                "denomination" : "6"
-            }
-        ],
-        "state" : "hit"
-    }
-]
+{
+    "participants":
+    [
+        {
+            "participantId" : 2L,
+            "name" : "안녕",
+            "bettingMoney" : 1000,
+            "cards" : [
+                {
+                    "suit" : "c",
+                    "denomination" : "2"
+                },
+                {
+                    "suit" : "d",
+                    "denomination" : "3"
+                }
+            ],
+            "state" : "hit"
+        },
+        {
+            "participantId" : 3L,
+            "name" : "바이",
+            "bettingMoney" : 3000,
+            "cards" : [
+                {
+                    "suit" : "s",
+                    "denomination" : "2"
+                },
+                {
+                    "suit" : "d",
+                    "denomination" : "6"
+                }
+            ],
+            "state" : "hit"
+        }
+    ]
+}
 ```
-- [ ] 딜러 상태조회
+- [x] 딜러 상태조회
 - get `/api/blackjack/{gameId}/dealer`
 ```text
 body:
