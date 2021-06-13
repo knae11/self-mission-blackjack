@@ -85,7 +85,7 @@
 - 최종결과를 관리하는 객체를 만든다. (ResultBoard)
   - [x] 딜러, 플레이어별로 결과를 관리한다.
   
-- [ ] Stay 상태는 응답에 따라 만들어 진다. -> Controller, Service 가 해줄 역할
+- [x] Stay 상태는 Blackjack, Bust가 아닌 상태의 게임이 종료하는 로직으며, Stay 결정 로직 구현한다.
 
 ## 2차 스프링 부트를 사용하여 웹, DB 연결
 1. 방을 만든다. (딜러를 생성) post
@@ -95,7 +95,7 @@
 4. 최종 결과를 출력한다.
 
 ### DB 설계
-- [ ] BlackjackGame 객체 구현
+- [x] BlackjackGame 객체 구현
 - [ ] 객체 필드 단위로 DB 테이블 설계 
 ### RestAPI 설계
 
