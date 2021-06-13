@@ -57,4 +57,8 @@ public class Cards {
                 .filter(Card::isAce)
                 .count();
     }
+
+    public List<Card> getCards(){
+        return new ArrayList<>(cards);
+    }
 }

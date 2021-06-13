@@ -29,4 +29,11 @@ public interface Participant {
 
     String getName();
 
+    Long getId();
+
+    int getInitialBetting();
+
+    String getStateToString();
+
+    List<Card> getCards();
 }

@@ -25,4 +25,6 @@ public interface State {
     boolean isRunning();
 
     boolean hasCardSizeOf(int size);
+
+    List<Card> getCards();
 }

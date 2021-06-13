@@ -57,4 +57,10 @@ public class InitTurn extends Running {
     public boolean hasCardSizeOf(int size) {
         return cards.isSizeOf(size);
     }
+
+    @Override
+    public List<Card> getCards() {
+        return cards.getCards();
+    }
+
 }

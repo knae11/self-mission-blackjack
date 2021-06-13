@@ -11,10 +11,16 @@ import java.util.stream.Collectors;
 public class Deck {
     private static final int ZERO = 0;
 
+    private final Long id;
     private final List<Card> cards;
 
+    private Deck(Long id, List<Card> cards) {
+        this.id = id;
+        this.cards = cards;
+    }
+
     private Deck(List<Card> cards) {
-        this.cards = new ArrayList<>(cards);
+        this(null, new ArrayList<>(cards));
     }
 
     public static Deck createBasic() {
@@ -31,14 +37,18 @@ public class Deck {
         return new Deck(cards);
     }
 
+    public static Deck of(long id, Deck deck) {
+        return new Deck(id, deck.cards);
+    }
+
     public List<Card> getCards() {
         return new ArrayList<>(cards);
     }
 
-    public List<String> getCardIds() {
+    public String getCardIds() {
         return cards.stream()
                 .map(Card::getCardId)
-                .collect(Collectors.toList());
+                .collect(Collectors.joining(","));
     }
 
     public Card drawCard() {
@@ -50,5 +60,9 @@ public class Deck {
 
     public List<Card> drawTwoCards() {
         return Arrays.asList(drawCard(), drawCard());
+    }
+
+    public Long getId() {
+        return id;
     }
 }

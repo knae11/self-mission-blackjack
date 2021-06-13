@@ -13,14 +13,20 @@ import java.util.Collections;
 import java.util.List;
 
 public class BlackjackGame {
+    private final Long id;
     private final Dealer dealer;
     private final List<Player> players;
     private final Deck deck;
 
-    public BlackjackGame(Dealer dealer, List<Player> players, Deck deck) {
+    public BlackjackGame(Long id, Dealer dealer, List<Player> players, Deck deck) {
+        this.id = id;
         this.dealer = dealer;
         this.players = players;
         this.deck = deck;
+    }
+
+    public BlackjackGame(Dealer dealer, List<Player> players, Deck deck) {
+        this(null, dealer, players, deck);
     }
 
     public BlackjackGame(Player player, Deck deck) {

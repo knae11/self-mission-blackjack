@@ -99,21 +99,23 @@
 - [x] 객체 필드 단위로 DB 테이블 설계 
 ### RestAPI 설계
 
-- [ ] 게임 생성
+- [x] 게임 생성
 - post `/api/blackjack`
 ```text
 <request>
 body: 
-[
-    {
-        "name" : "안녕",
-        "bettingMoney" : 1000
-    },
-    {
-        "name" : "바이",
-        "bettingMoney" : 3000
-    }
-]
+{
+    "playerRequests": [
+        {
+            "name": "안녕",
+            "bettingMoney": 1000
+        },
+        {
+            "name": "바이",
+            "bettingMoney": 3000
+        }
+    ]
+}
 
 <response>
 
@@ -123,29 +125,54 @@ StatusCode: 201(CREATED)
 body:
 {   
     "gameId": 1L,
-    "participant":[
-        {
-            "participantId" : 1L,
-            "isPlayer" : false,
-            "name" : "딜러",
-            "bettingMoney" : 0,
-            "state" : "hit"
-        },
-        {
-            "participantId" : 2L,
-            "isPlayer" : true,
-            "name" : "안녕",
-            "bettingMoney" : 1000,
-            "state" : "hit"
-        },
-        {
-            "participantId" : 3L,
-            "isPlayer" : true,
-            "name" : "바이",
-            "bettingMoney" : 3000,
-            "state" : "hit"
-        }
-    ]
+    "participants":
+        [
+            {
+                "participantId" : 1L,
+                "name" : "딜러",
+                "bettingMoney" : 0,
+                "cards" : [
+                    {
+                        "suit" : "d",
+                        "denomination" : "6"
+                    }
+                ],
+                "state" : "hit"
+            },
+            {
+                "participantId" : 2L,
+                "name" : "안녕",
+                "bettingMoney" : 1000,
+                "cards" : [
+                    {
+                        "suit" : "c",
+                        "denomination" : "2"
+                    },
+                    {
+                        "suit" : "d",
+                        "denomination" : "3"
+                    }
+                ],
+                "state" : "hit"
+            },
+            {
+                "participantId" : 3L,
+                "name" : "바이",
+                "bettingMoney" : 3000
+                "cards" : [
+                    {
+                        "suit" : "s",
+                        "denomination" : "2"
+                    },
+                    {
+                        "suit" : "d",
+                        "denomination" : "6"
+                    }
+                ],
+                "state" : "hit"
+            }
+            
+        ]
 }
 ```
 - [ ] 전체 상태조회

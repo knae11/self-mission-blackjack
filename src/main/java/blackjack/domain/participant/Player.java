@@ -1,5 +1,6 @@
 package blackjack.domain.participant;
 
+import blackjack.application.StateFinder;
 import blackjack.domain.card.Card;
 import blackjack.domain.state.InitTurn;
 import blackjack.domain.state.State;
@@ -10,15 +11,21 @@ public class Player implements Participant {
     private static final String DEFAULT_NAME = "any";
     private static final int DEFAULT_BETTING_MONEY = 0;
 
+    private final Long id;
     private final String name;
     private final int initialBetting;
 
     private State state;
 
-    public Player(String name, int bettingMoney, State state) {
+    public Player(Long id, String name, int initialBetting, State state) {
+        this.id = id;
         this.name = name;
-        this.initialBetting = bettingMoney;
+        this.initialBetting = initialBetting;
         this.state = state;
+    }
+
+    public Player(String name, int bettingMoney, State state) {
+        this(null, name, bettingMoney, state);
     }
 
     public Player(String name, int bettingMoney) {
@@ -36,6 +43,10 @@ public class Player implements Participant {
     public Player(State state) {
         this(DEFAULT_NAME, DEFAULT_BETTING_MONEY, state);
     }
+
+    public Player(Long id, Player player) {
+        this(id, player.name, player.initialBetting, player.state);
+;    }
 
     @Override
     public State takeCards(List<Card> cards) {
@@ -94,7 +105,23 @@ public class Player implements Participant {
         return name;
     }
 
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
     public int getInitialBetting() {
         return initialBetting;
+    }
+
+    @Override
+    public String getStateToString() {
+        return StateFinder.convertToString(state);
+    }
+
+    @Override
+    public List<Card> getCards() {
+        return state.getCards();
     }
 }

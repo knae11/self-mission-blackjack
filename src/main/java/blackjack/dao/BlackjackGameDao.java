@@ -11,18 +11,21 @@ import java.util.Map;
 @Repository
 public class BlackjackGameDao {
     private final JdbcTemplate jdbcTemplate;
-    private final SimpleJdbcInsert simpleJdbcInsert;
+    private final SimpleJdbcInsert insertAction;
 
     public BlackjackGameDao(JdbcTemplate jdbcTemplate, DataSource dataSource) {
         this.jdbcTemplate = jdbcTemplate;
-        this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
+        this.insertAction = new SimpleJdbcInsert(dataSource)
                 .withTableName("blackjackgame")
-                .usingGeneratedKeyColumns("game_id");
+                .usingGeneratedKeyColumns("game_id")
+                .usingColumns("dealer_id", "player_ids", "deck_id");
     }
 
-    public Long createRoom(String deck) {
+    public Long create(Long dealerId, String playerIds, Long deckId) {
         Map<String, Object> params = new HashMap<>();
-        params.put("deck", deck);
-        return simpleJdbcInsert.executeAndReturnKey(params).longValue();
+        params.put("dealer_id", dealerId);
+        params.put("player_ids", playerIds);
+        params.put("deck_id", deckId);
+        return insertAction.executeAndReturnKey(params).longValue();
     }
 }
