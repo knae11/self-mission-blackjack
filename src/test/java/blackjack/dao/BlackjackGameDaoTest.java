@@ -9,8 +9,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @JdbcTest
-@DisplayName("[Dao] Room")
+@DisplayName("[Dao] Game")
 class BlackjackGameDaoTest {
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -24,13 +26,9 @@ class BlackjackGameDaoTest {
         this.blackjackgameDao = new BlackjackGameDao(jdbcTemplate, dataSource);
     }
 
-    @DisplayName("방 생성")
+    @DisplayName("게임 생성")
     @Test
-    void createRoom() {
-//        Deck deck = Deck.createBasic();
-//        List<String> cardIds = deck.getCardIds();
-//        String cardDeck = String.join("/", cardIds);
-//
-//        assertThat(blackjackgameDao.createRoom(cardDeck)).isNotNull();
+    void create() {
+        assertThat(blackjackgameDao.create(1L, "2,3,4", 1L)).isNotNull();
     }
 }

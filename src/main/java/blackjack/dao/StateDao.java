@@ -16,6 +16,6 @@ public class StateDao {
         this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
                 .withTableName("state")
                 .usingGeneratedKeyColumns("state_id")
-                .usingColumns("participant_id", "game_id", "name", "card_id");
+                .usingColumns("participant_id", "name", "card_id");
     }
 }

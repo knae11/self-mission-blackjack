@@ -1,12 +1,12 @@
 package blackjack.domain.card;
 
+import blackjack.application.ListConvertor;
 import blackjack.exception.card.EmptyException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Deck {
     private static final int ZERO = 0;
@@ -46,9 +46,7 @@ public class Deck {
     }
 
     public String getCardIds() {
-        return cards.stream()
-                .map(Card::getCardId)
-                .collect(Collectors.joining(","));
+        return ListConvertor.compressCardIds(cards);
     }
 
     public Card drawCard() {

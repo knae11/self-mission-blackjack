@@ -8,7 +8,6 @@ import blackjack.domain.BlackjackGame;
 import blackjack.domain.card.Deck;
 import blackjack.domain.participant.Dealer;
 import blackjack.domain.participant.Player;
-import blackjack.dto.BlackjackGameRequest;
 import blackjack.dto.BlackjackGameResponse;
 import blackjack.dto.ParticipantResponse;
 import blackjack.dto.PlayerRequest;
@@ -51,10 +50,7 @@ public class BlackjackService {
                 .collect(Collectors.toList());
         Deck createdDeck = deckDao.create(deck);
 
-        String playerIds = createdPlayers.stream()
-                .map(Player::getId)
-                .map(String::valueOf)
-                .collect(Collectors.joining(","));
+        String playerIds = ListConvertor.compressPlayerIds(createdPlayers);
 
         Long gameId = blackjackgameDao.create(createdDealer.getId(), playerIds, createdDeck.getId());
 
