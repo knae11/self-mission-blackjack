@@ -33,9 +33,14 @@ public class DeckDao {
     }
 
     public Deck findDeckById(Long deckId) {
-        String sql = "SELECT (card_ids) FROM deck WHERE deck_id = ?";
+        String sql = "SELECT card_ids FROM deck WHERE deck_id = ?";
         String cardIds = jdbcTemplate.queryForObject(sql, String.class, deckId);
         List<Card> cards = ListConvertor.depressCardIds(cardIds);
         return Deck.listOf(cards);
+    }
+
+    public void update(Deck deck) {
+        String sql = "UPDATE deck SET card_ids = ? WHERE deck_id = ?";
+        jdbcTemplate.update(sql, deck.getCardIds(), deck.getId());
     }
 }

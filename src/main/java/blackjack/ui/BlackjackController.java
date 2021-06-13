@@ -61,4 +61,9 @@ public class BlackjackController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(availabilityResponse);
     }
+    @PostMapping("/{gameId}/players/{playerId}")
+    public ResponseEntity<Void> findDealer(@PathVariable Long gameId, @PathVariable Long playerId, @RequestBody CardTakingRequest cardTakingRequest) {
+        blackjackService.takePlayerCard(gameId, playerId, cardTakingRequest);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }

@@ -8,6 +8,7 @@ import blackjack.domain.BlackjackGame;
 import blackjack.domain.card.Deck;
 import blackjack.domain.participant.Dealer;
 import blackjack.domain.participant.Player;
+import blackjack.domain.state.State;
 import blackjack.dto.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -94,5 +95,18 @@ public class BlackjackService {
         Player player = participantDao.findPlayerById(playerId);
 
         return new AvailabilityResponse(player.isRunning());
+    }
+
+    @Transactional
+    public void takePlayerCard(Long gameId, Long playerId, CardTakingRequest cardTakingRequest) {
+        Long deckId = blackjackgameDao.findDeckId(gameId);
+        Deck deck = deckDao.findDeckById(deckId);
+        Player player = participantDao.findPlayerById(playerId);
+
+        BlackjackGame blackjackGame = new BlackjackGame(player, deck);
+        blackjackGame.takeTurnOf(cardTakingRequest.getIsTaking(), player);
+
+        deckDao.update(deck);
+        stateDao.updateByPlayer(player);
     }
 }

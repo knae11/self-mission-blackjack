@@ -327,7 +327,7 @@ body:
 
 
 ```
-- [ ] 플레이어 카드 받기
+- [x] 플레이어 카드 받기
 - post `/api/blackjack/{gameId}/players/{participantId}`
 ```text
 <request>
