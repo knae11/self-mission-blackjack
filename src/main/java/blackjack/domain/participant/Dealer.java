@@ -11,10 +11,16 @@ public class Dealer implements Participant {
 
     private State state;
     private final String name;
+    private final Long id;
 
-    public Dealer(String name, State state) {
+    public Dealer(Long id, String name, State state) {
+        this.id = id;
         this.name = name;
         this.state = state;
+    }
+
+    public Dealer(String name, State state) {
+        this(null, name, state);
     }
 
     public Dealer() {
@@ -82,5 +88,10 @@ public class Dealer implements Participant {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
     }
 }

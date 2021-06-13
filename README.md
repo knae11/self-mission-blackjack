@@ -124,7 +124,7 @@ body:
     }
 ]
 <response>
-status: ok
+status: 201, created
 
 body: 
 [

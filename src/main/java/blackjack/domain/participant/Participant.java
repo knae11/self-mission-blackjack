@@ -27,4 +27,6 @@ public interface Participant {
     boolean isPlayer();
 
     String getName();
+
+    Long getId();
 }

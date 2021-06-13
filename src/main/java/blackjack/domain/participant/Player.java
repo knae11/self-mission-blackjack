@@ -1,9 +1,11 @@
 package blackjack.domain.participant;
 
 import blackjack.domain.card.Card;
+import blackjack.domain.card.Cards;
 import blackjack.domain.state.InitTurn;
 import blackjack.domain.state.State;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Player implements Participant {
@@ -12,21 +14,31 @@ public class Player implements Participant {
 
     private final int initialBetting;
     private final String name;
+    private final Long id;
 
     private State state;
 
-    public Player(String name, int bettingMoney, State state) {
+    public Player(Long id, String name, int bettingMoney, State state) {
+        this.id = id;
         this.name = name;
         this.initialBetting = bettingMoney;
         this.state = state;
     }
 
+    public Player(String name, int bettingMoney, State state) {
+        this(null, name, bettingMoney, state);
+    }
+
     public Player(String name, int bettingMoney) {
-        this(name, bettingMoney, new InitTurn());
+        this(null, name, bettingMoney, new InitTurn());
+    }
+
+    public Player(Long id, String name, int bettingMoney) {
+        this(id, name, bettingMoney, new InitTurn());
     }
 
     public Player(List<Card> cards) {
-        this(DEFAULT_NAME, DEFAULT_BETTING_MONEY, new InitTurn(cards));
+        this(null, DEFAULT_NAME, DEFAULT_BETTING_MONEY, new InitTurn(cards));
     }
 
     public Player() {
@@ -34,7 +46,7 @@ public class Player implements Participant {
     }
 
     public Player(State state) {
-        this(DEFAULT_NAME, DEFAULT_BETTING_MONEY, state);
+        this(null, DEFAULT_NAME, DEFAULT_BETTING_MONEY, state);
     }
 
     @Override
@@ -52,6 +64,7 @@ public class Player implements Participant {
         return state.hasCardSizeOf(size);
     }
 
+    @Override
     public boolean isAbleToTake() {
         return state.calculateScore() <= 21;
     }
@@ -91,7 +104,22 @@ public class Player implements Participant {
         return name;
     }
 
+    @Override
+    public Long getId() {
+        return id;
+    }
+
     public int getInitialBetting() {
         return initialBetting;
     }
+
+    public String getCompressedCardIds(){
+        Cards cards = state.getCards();
+        return String.join("/",cards.getCardIds());
+    }
+
+    public State getState(){
+        return state;
+    }
+
 }

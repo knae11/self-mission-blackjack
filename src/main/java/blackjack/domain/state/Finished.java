@@ -52,4 +52,9 @@ abstract class Finished implements State {
     public boolean isStay() {
         return false;
     }
+
+    @Override
+    public Cards getCards() {
+        return cards;
+    }
 }

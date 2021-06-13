@@ -28,8 +28,12 @@ public class Card {
     }
 
     public static Card of(Suit suit, Denomination denomination) {
-        if (cache.containsKey(suit.getId() + denomination.getId())) {
-            return cache.get(suit.getId() + denomination.getId());
+      return of(suit.getId() + denomination.getId());
+    }
+
+    public static Card of(String cardId) {
+        if (cache.containsKey(cardId)) {
+            return cache.get(cardId);
         }
         throw new CardInvalidException();
     }
