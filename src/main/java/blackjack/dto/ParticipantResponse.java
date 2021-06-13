@@ -39,6 +39,11 @@ public class ParticipantResponse {
                 .collect(Collectors.toList());
     }
 
+    public static ParticipantResponse of(Player player) {
+        return new ParticipantResponse(player.getId(), player.getName(), player.getInitialBetting(), CardResponse.listOf(player.getCards()), player.getStateToString());
+
+    }
+
     public Long getParticipantId() {
         return participantId;
     }

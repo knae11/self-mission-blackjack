@@ -31,7 +31,8 @@ public class BlackjackAcceptanceTest extends AcceptanceTest {
         assertThat(response.header("Location")).isNotNull();
         BlackjackGameResponse blackjackGame = response.as(BlackjackGameResponse.class);
         assertThat(blackjackGame.getGameId()).isNotNull();
-        assertThat(blackjackGame.getParticipants()).hasSize(3);
+        assertThat(blackjackGame.getDealer()).isNotNull();
+        assertThat(blackjackGame.getParticipants()).hasSize(2);
     }
 
     @DisplayName("게임 전체 참가자 조회")
@@ -93,6 +94,29 @@ public class BlackjackAcceptanceTest extends AcceptanceTest {
         DealerResponse dealerResponse = response.as(DealerResponse.class);
         assertThat(dealerResponse.getParticipantId()).isNotNull();
         assertThat(dealerResponse.getCards()).hasSize(1);
+    }
+
+    @DisplayName("개별 플레이어 조회")
+    @Test
+    void findPlayer() {
+        List<PlayerRequest> playerRequests = Arrays.asList(
+                new PlayerRequest("안녕", 1000),
+                new PlayerRequest("바이", 3000));
+        BlackjackGameRequest request = new BlackjackGameRequest(playerRequests);
+        ExtractableResponse<Response> gameResponse = 게임생성(request);
+        Long gameId = 아이디조회(gameResponse);
+        Long playerId = gameResponse.as(BlackjackGameResponse.class).getParticipants().get(0).getParticipantId();
+
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .when().get("/api/blackjack/" + gameId + "/players/" + playerId)
+                .then().log().all()
+                .extract();
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        ParticipantResponse participantResponse = response.as(ParticipantResponse.class);
+        assertThat(participantResponse.getParticipantId()).isNotNull();
+        assertThat(participantResponse.getCards()).hasSize(2);
     }
 
     private Long 아이디조회(ExtractableResponse<Response> response) {

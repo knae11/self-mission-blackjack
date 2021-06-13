@@ -124,25 +124,22 @@ StatusCode: 201(CREATED)
 
 body:
 {   
-    "gameId": 1L,
+    "gameId" : 1L,
+    "dealer" :
+        {
+          "participantId" : 1L,
+          "name" : "딜러",
+          "bettingMoney" : 0,
+          "cards" : [
+              {
+                  "suit" : "d",
+                  "denomination" : "6"
+              }
+          ],
+          "state" : "hit"
+        },    
     "participants":
         [
-            {
-                "participantId" : 1L,
-                "name" : "딜러",
-                "bettingMoney" : 0,
-                "cards" : [
-                    {
-                        "suit" : "s",
-                        "denomination" : "6"
-                    },
-                    {
-                        "suit" : "d",
-                        "denomination" : "6"
-                    }
-                ],
-                "state" : "hit"
-            },
             {
                 "participantId" : 2L,
                 "name" : "안녕",
@@ -237,7 +234,7 @@ body:
     ]
 }
 ```
-- [ ] 전체 플레이어 상태 조회
+- [x] 전체 플레이어 상태 조회
 - get `/api/blackjack/{gameId}/players`
 ```text
 <response>
@@ -296,7 +293,7 @@ body:
         "state" : "hit"
     }
 ```
-- [ ] 개별 플레이어 상태 조회
+- [x] 개별 플레이어 상태 조회
 - get `/api/blackjack/{gameId}/players/{participantId}`
 ```text
 <response>

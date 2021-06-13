@@ -51,7 +51,7 @@ public class BlackjackService {
         Long gameId = blackjackgameDao.create(createdDealer.getId(), playerIds, createdDeck.getId());
 
 
-        return new BlackjackGameResponse(gameId, ParticipantResponse.listOf(createdDealer, createdPlayers));
+        return new BlackjackGameResponse(gameId, DealerResponse.of(createdDealer), ParticipantResponse.listOf(createdPlayers));
     }
 
     public ParticipantsResponse findParticipants(Long gameId) {
@@ -82,5 +82,11 @@ public class BlackjackService {
         Dealer dealer = participantDao.findDealerById(dealerId);
 
         return DealerResponse.of(dealer);
+    }
+
+    public ParticipantResponse findPlayer( Long playerId) {
+        Player player = participantDao.findPlayerById(playerId);
+
+        return ParticipantResponse.of(player);
     }
 }

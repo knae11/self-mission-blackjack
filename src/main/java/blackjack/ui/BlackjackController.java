@@ -47,4 +47,11 @@ public class BlackjackController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(dealerResponse);
     }
+
+    @GetMapping("/{gameId}/players/{playerId}")
+    public ResponseEntity<ParticipantResponse> findDealer(@PathVariable Long gameId, @PathVariable Long playerId) {
+        ParticipantResponse participantResponse = blackjackService.findPlayer(playerId);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(participantResponse);
+    }
 }
