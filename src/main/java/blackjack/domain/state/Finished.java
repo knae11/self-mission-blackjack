@@ -4,7 +4,6 @@ import blackjack.domain.card.Card;
 import blackjack.domain.card.Cards;
 import blackjack.exception.card.CardCannotTakeException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 abstract class Finished implements State {

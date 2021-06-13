@@ -32,7 +32,7 @@ public class ListConvertor {
 
     public static List<Card> depressCardIds(String cardIds) {
         String[] cardIdValues = cardIds.split(DELIMITER);
-       return Arrays.stream(cardIdValues)
+        return Arrays.stream(cardIdValues)
                 .map(cardId -> Card.of(cardId))
                 .collect(Collectors.toList());
     }

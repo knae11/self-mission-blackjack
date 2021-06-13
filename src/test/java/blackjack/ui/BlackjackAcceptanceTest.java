@@ -42,17 +42,17 @@ public class BlackjackAcceptanceTest extends AcceptanceTest {
                 new PlayerRequest("안녕", 1000),
                 new PlayerRequest("바이", 3000));
         BlackjackGameRequest request = new BlackjackGameRequest(playerRequests);
-        Long gameId  = 아이디조회(게임생성(request));
+        Long gameId = 아이디조회(게임생성(request));
 
         ExtractableResponse<Response> response = RestAssured
                 .given().log().all()
-                .when().get("/api/blackjack/" + gameId + "/participants")
+                .when().get("/api/blackjack/" + gameId)
                 .then().log().all()
                 .extract();
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        ParticipantsResponse participantsResponse = response.as(ParticipantsResponse.class);
-        assertThat(participantsResponse.getParticipants()).hasSize(3);
+        BlackjackGameResponse blackjackGameResponse = response.as(BlackjackGameResponse.class);
+        assertThat(blackjackGameResponse.getParticipants()).hasSize(2);
     }
 
     @DisplayName("게임 플레이어 전체 조회")
@@ -62,7 +62,7 @@ public class BlackjackAcceptanceTest extends AcceptanceTest {
                 new PlayerRequest("안녕", 1000),
                 new PlayerRequest("바이", 3000));
         BlackjackGameRequest request = new BlackjackGameRequest(playerRequests);
-        Long gameId  = 아이디조회(게임생성(request));
+        Long gameId = 아이디조회(게임생성(request));
 
         ExtractableResponse<Response> response = RestAssured
                 .given().log().all()
@@ -82,7 +82,7 @@ public class BlackjackAcceptanceTest extends AcceptanceTest {
                 new PlayerRequest("안녕", 1000),
                 new PlayerRequest("바이", 3000));
         BlackjackGameRequest request = new BlackjackGameRequest(playerRequests);
-        Long gameId  = 아이디조회(게임생성(request));
+        Long gameId = 아이디조회(게임생성(request));
 
         ExtractableResponse<Response> response = RestAssured
                 .given().log().all()

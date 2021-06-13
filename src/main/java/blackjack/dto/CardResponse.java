@@ -25,13 +25,13 @@ public class CardResponse {
 
     public static List<CardResponse> listOf(List<Card> cards) {
         return cards.stream()
-                .map(card-> new CardResponse(card.getCardId()))
+                .map(card -> new CardResponse(card.getCardId()))
                 .collect(Collectors.toList());
     }
 
     public static List<CardResponse> dealerListOf(List<Card> cards) {
         List<CardResponse> cardResponses = new ArrayList<>();
-        for (int i = 1; i < cards.size() ; i++) {
+        for (int i = 1; i < cards.size(); i++) {
             cardResponses.add(new CardResponse(cards.get(i).getCardId()));
         }
         return cardResponses;

@@ -54,7 +54,7 @@ public class BlackjackService {
         return new BlackjackGameResponse(gameId, DealerResponse.of(createdDealer), ParticipantResponse.listOf(createdPlayers));
     }
 
-    public ParticipantsResponse findParticipants(Long gameId) {
+    public BlackjackGameResponse findParticipants(Long gameId) {
         Long dealerId = blackjackgameDao.findDealerId(gameId);
         List<Long> playerIds = ListConvertor.depressPlayerIds(blackjackgameDao.findPlayerIds(gameId));
 
@@ -63,7 +63,7 @@ public class BlackjackService {
                 .map(participantDao::findPlayerById)
                 .collect(Collectors.toList());
 
-        return new ParticipantsResponse(ParticipantResponse.listOf(dealer, players));
+        return new BlackjackGameResponse(gameId, DealerResponse.of(dealer), ParticipantResponse.listOf(players));
     }
 
     public ParticipantsResponse findPlayers(Long gameId) {
@@ -84,7 +84,7 @@ public class BlackjackService {
         return DealerResponse.of(dealer);
     }
 
-    public ParticipantResponse findPlayer( Long playerId) {
+    public ParticipantResponse findPlayer(Long playerId) {
         Player player = participantDao.findPlayerById(playerId);
 
         return ParticipantResponse.of(player);

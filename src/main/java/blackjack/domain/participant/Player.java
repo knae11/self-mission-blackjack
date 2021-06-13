@@ -46,7 +46,8 @@ public class Player implements Participant {
 
     public Player(Long id, Player player) {
         this(id, player.name, player.initialBetting, player.state);
-;    }
+        ;
+    }
 
     @Override
     public State takeCards(List<Card> cards) {

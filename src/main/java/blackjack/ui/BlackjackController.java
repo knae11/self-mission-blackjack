@@ -27,11 +27,11 @@ public class BlackjackController {
                 .body(blackjackGameResponse);
     }
 
-    @GetMapping("/{gameId}/participants")
-    public ResponseEntity<ParticipantsResponse> findParticipants(@PathVariable Long gameId) {
-        ParticipantsResponse participantsResponse = blackjackService.findParticipants(gameId);
+    @GetMapping("/{gameId}")
+    public ResponseEntity<BlackjackGameResponse> findParticipants(@PathVariable Long gameId) {
+        BlackjackGameResponse blackjackGameResponse = blackjackService.findParticipants(gameId);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(participantsResponse);
+                .body(blackjackGameResponse);
     }
 
     @GetMapping("/{gameId}/players")

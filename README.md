@@ -177,61 +177,61 @@ body:
 }
 ```
 - [x] 전체 상태조회
-- get `/api/blackjack/{gameId}/participants`
+- get `/api/blackjack/{gameId}`
 ```text
 body:
-{
+body:
+{   
+    "gameId" : 1L,
+    "dealer" :
+        {
+          "participantId" : 1L,
+          "name" : "딜러",
+          "bettingMoney" : 0,
+          "cards" : [
+              {
+                  "suit" : "d",
+                  "denomination" : "6"
+              }
+          ],
+          "state" : "hit"
+        },    
     "participants":
-    [
-        {
-            "participantId" : 1L,
-            "name" : "딜러",
-            "bettingMoney" : 0,
-            "cards" : [
-                {
-                    "suit" : "s",
-                    "denomination" : "6"
-                },
-                {
-                    "suit" : "d",
-                    "denomination" : "6"
-                }
-            ],
-            "state" : "hit"
-        },
-        {
-            "participantId" : 2L,
-            "name" : "안녕",
-            "bettingMoney" : 1000,
-            "cards" : [
-                {
-                    "suit" : "c",
-                    "denomination" : "2"
-                },
-                {
-                    "suit" : "d",
-                    "denomination" : "3"
-                }
-            ],
-            "state" : "hit"
-        },
-        {
-            "participantId" : 3L,
-            "name" : "바이",
-            "bettingMoney" : 3000
-            "cards" : [
-                {
-                    "suit" : "s",
-                    "denomination" : "2"
-                },
-                {
-                    "suit" : "d",
-                    "denomination" : "6"
-                }
-            ],
-            "state" : "hit"
-        }
-    ]
+        [
+            {
+                "participantId" : 2L,
+                "name" : "안녕",
+                "bettingMoney" : 1000,
+                "cards" : [
+                    {
+                        "suit" : "c",
+                        "denomination" : "2"
+                    },
+                    {
+                        "suit" : "d",
+                        "denomination" : "3"
+                    }
+                ],
+                "state" : "hit"
+            },
+            {
+                "participantId" : 3L,
+                "name" : "바이",
+                "bettingMoney" : 3000
+                "cards" : [
+                    {
+                        "suit" : "s",
+                        "denomination" : "2"
+                    },
+                    {
+                        "suit" : "d",
+                        "denomination" : "6"
+                    }
+                ],
+                "state" : "hit"
+            }
+            
+        ]
 }
 ```
 - [x] 전체 플레이어 상태 조회
@@ -316,7 +316,7 @@ body:
 }
 ```
 - [ ] 카드 받기 가능 여부 확인
-- get `/api/blackjack/{gameId}/participants/{participantId}` 
+- get `/api/blackjack/{gameId}/players/{participantId}` 
 ```text
 <response>
 status: ok
@@ -364,7 +364,7 @@ body:
         "money" : -1500
     },
     {
-        "id" : 1L,
+        "id" : 2L,
         "name" : "안녕",
         "result" : {
             "win" : 0,
@@ -374,7 +374,7 @@ body:
         "money" : 1000
     },
     {
-        "id" : 2L,
+        "id" : 3L,
         "name" : "바이",
         "result" : {
             "win" : 1,
