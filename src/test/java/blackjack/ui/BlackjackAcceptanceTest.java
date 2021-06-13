@@ -119,6 +119,28 @@ public class BlackjackAcceptanceTest extends AcceptanceTest {
         assertThat(participantResponse.getCards()).hasSize(2);
     }
 
+    @DisplayName("개별 플레이어 카드 받을 수 있는지 여부 조회")
+    @Test
+    void isPlayerAbleToTakeCard() {
+        List<PlayerRequest> playerRequests = Arrays.asList(
+                new PlayerRequest("안녕", 1000),
+                new PlayerRequest("바이", 3000));
+        BlackjackGameRequest request = new BlackjackGameRequest(playerRequests);
+        ExtractableResponse<Response> gameResponse = 게임생성(request);
+        Long gameId = 아이디조회(gameResponse);
+        Long playerId = gameResponse.as(BlackjackGameResponse.class).getParticipants().get(0).getParticipantId();
+
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .when().get("/api/blackjack/" + gameId + "/players/" + playerId + "/availability")
+                .then().log().all()
+                .extract();
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        AvailabilityResponse availabilityResponse = response.as(AvailabilityResponse.class);
+        assertThat(availabilityResponse.getIsAbleToTake()).isNotNull();
+    }
+
     private Long 아이디조회(ExtractableResponse<Response> response) {
         return response.as(BlackjackGameResponse.class).getGameId();
     }

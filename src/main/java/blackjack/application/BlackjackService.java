@@ -89,4 +89,10 @@ public class BlackjackService {
 
         return ParticipantResponse.of(player);
     }
+
+    public AvailabilityResponse findPlayerAbleToTake(Long playerId) {
+        Player player = participantDao.findPlayerById(playerId);
+
+        return new AvailabilityResponse(player.isRunning());
+    }
 }

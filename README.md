@@ -312,11 +312,11 @@ body:
             "denomination" : "3"
         }
     ],
-    "state" : "Hit"
+    "state" : "hit"
 }
 ```
-- [ ] 카드 받기 가능 여부 확인
-- get `/api/blackjack/{gameId}/players/{participantId}` 
+- [x] 카드 받기 가능 여부 확인
+- get `/api/blackjack/{gameId}/players/{participantId}/availability` 
 ```text
 <response>
 status: ok
@@ -341,14 +341,14 @@ status: ok
 ```
 
 - [ ] 딜러 카드 받기
-- post `/api/blackjack/{gameId}/dealers/{participantId}`
+- post `/api/blackjack/{gameId}/dealer/{participantId}`
 ```text
 <response>
 status: ok
 ```
 
 - [ ] 전체 결과 조회
-- get `/api/blackjack/{gameId}/participants/result`
+- get `/api/blackjack/{gameId}/result`
 ```text
 <response>
 body:

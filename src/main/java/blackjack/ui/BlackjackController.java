@@ -54,4 +54,11 @@ public class BlackjackController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(participantResponse);
     }
+
+    @GetMapping("/{gameId}/players/{playerId}/availability")
+    public ResponseEntity<AvailabilityResponse> findPlayerAbleToTake(@PathVariable Long gameId, @PathVariable Long playerId) {
+        AvailabilityResponse availabilityResponse = blackjackService.findPlayerAbleToTake(playerId);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(availabilityResponse);
+    }
 }
