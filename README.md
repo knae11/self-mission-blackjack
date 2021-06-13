@@ -96,24 +96,11 @@
 
 ### DB 설계
 - [x] BlackjackGame 객체 구현
-- [ ] 객체 필드 단위로 DB 테이블 설계 
+- [x] 객체 필드 단위로 DB 테이블 설계 
 ### RestAPI 설계
 
-- [x] 방 생성
+- [ ] 게임 생성
 - post `/api/blackjack`
-```text
-<response>
-
-Location: /api/blackjack/{roomId}
-StatusCode: 201(CREATED)
-
-body:
-{
-    "roomId": 1
-}
-```
-- [ ] 게임 시작 -> 딜러와 플레이어를 생성
-- post `/api/blackjack/{roomId}/start` 
 ```text
 <request>
 body: 
@@ -127,33 +114,61 @@ body:
         "bettingMoney" : 3000
     }
 ]
-<response>
-status: ok
 
-body: 
+<response>
+
+Location: /api/blackjack/{gameId}
+StatusCode: 201(CREATED)
+
+body:
+{   
+    "gameId": 1L,
+    "participant":[
+        {
+            "participantId" : 1L,
+            "isPlayer" : false,
+            "name" : "딜러",
+            "bettingMoney" : 0,
+            "state" : "hit"
+        },
+        {
+            "participantId" : 2L,
+            "isPlayer" : true,
+            "name" : "안녕",
+            "bettingMoney" : 1000,
+            "state" : "hit"
+        },
+        {
+            "participantId" : 3L,
+            "isPlayer" : true,
+            "name" : "바이",
+            "bettingMoney" : 3000,
+            "state" : "hit"
+        }
+    ]
+}
+```
+- [ ] 전체 상태조회
+- get `/api/blackjack/{gameId}/participants`
+```text
+body:
 [
     {
-        "playerId" : 1L,
-        "name" : "안녕",
-        "bettingMoney" : 1000
+        "participantId" : 1L,
+        "name" : "딜러",
+        "bettingMoney" : 0,
+        "cards" : [
+            {
+                "suit" : "d",
+                "denomination" : "6"
+            }
+        ],
+        "state" : "hit"
     },
     {
-        "playerId" : 2L,
-        "name" : "바이",
-        "bettingMoney" : 3000
-    }
-]
-```
-- [ ] 전체 플레이어 상태 조회
-- get `/api/blackjack/{roomId}/players`
-```text
-<response>
-body: 
-[
-    {
-        "playerId" : 1L,
+        "participantId" : 2L,
         "name" : "안녕",
-        "bettingMoney" : 1000
+        "bettingMoney" : 1000,
         "cards" : [
             {
                 "suit" : "c",
@@ -164,10 +179,10 @@ body:
                 "denomination" : "3"
             }
         ],
-        "blackjack.domain.state" : "Hit"
+        "state" : "hit"
     },
     {
-        "playerId" : 2L,
+        "participantId" : 3L,
         "name" : "바이",
         "bettingMoney" : 3000
         "cards" : [
@@ -180,33 +195,74 @@ body:
                 "denomination" : "6"
             }
         ],
-        "blackjack.domain.state" : "Hit"
+        "state" : "hit"
+    }
+    
+]
+```
+- [ ] 전체 플레이어 상태 조회
+- get `/api/blackjack/{gameId}/players`
+```text
+<response>
+body: 
+[
+    {
+        "participantId" : 2L,
+        "name" : "안녕",
+        "bettingMoney" : 1000,
+        "cards" : [
+            {
+                "suit" : "c",
+                "denomination" : "2"
+            },
+            {
+                "suit" : "d",
+                "denomination" : "3"
+            }
+        ],
+        "state" : "hit"
+    },
+    {
+        "participantId" : 3L,
+        "name" : "바이",
+        "bettingMoney" : 3000,
+        "cards" : [
+            {
+                "suit" : "s",
+                "denomination" : "2"
+            },
+            {
+                "suit" : "d",
+                "denomination" : "6"
+            }
+        ],
+        "state" : "hit"
     }
 ]
 ```
 - [ ] 딜러 상태조회
-- get `/api/blackjack/{roomId}/dealer`
+- get `/api/blackjack/{gameId}/dealer`
 ```text
 body:
 {
-        "roomId" : 1L,
-        "name" : "딜러"
+        "participantId" : 1L,
+        "name" : "딜러",
         "cards" : [
             {
                 "suit" : "d",
                 "denomination" : "6"
             }
         ],
-        "blackjack.domain.state" : "Hit"
+        "state" : "hit"
     }
 ```
 - [ ] 개별 플레이어 상태 조회
-- get `/api/blackjack/{roomId}/players/{playerId}`
+- get `/api/blackjack/{gameId}/players/{participantId}`
 ```text
 <response>
 body: 
 {
-    "playerId" : 1L,
+    "participantId" : 2L,
     "name" : "안녕",
     "bettingMoney" : 1000
     "cards" : [
@@ -219,13 +275,23 @@ body:
             "denomination" : "3"
         }
     ],
-    "blackjack.domain.state" : "Hit"
+    "state" : "Hit"
 }
 ```
+- [ ] 카드 받기 가능 여부 확인
+- get `/api/blackjack/{gameId}/participants/{participantId}` 
+```text
+<response>
+status: ok
+body:
+{
+    "isAbleToTake" : true
+}
 
-- [ ] 카드 받기
-- post `/api/blackjack/{roomId}/players/{playerId}`
-- post `/api/blackjack/{roomId}/dealer`
+
+```
+- [ ] 플레이어 카드 받기
+- post `/api/blackjack/{gameId}/players/{participantId}`
 ```text
 <request>
 body:
@@ -237,8 +303,15 @@ body:
 status: ok
 ```
 
+- [ ] 딜러 카드 받기
+- post `/api/blackjack/{gameId}/dealers/{participantId}`
+```text
+<response>
+status: ok
+```
+
 - [ ] 전체 결과 조회
-- get `/api/blackjack/{roomId}/results`
+- get `/api/blackjack/{gameId}/participants/result`
 ```text
 <response>
 body:
@@ -246,7 +319,7 @@ body:
     {
         "id" : 1L,
         "name" : "딜러",
-        "blackjack.domain.result" : {
+        "result" : {
             "win" : 0,
             "draw" : 1,
             "lose" : 1
@@ -256,7 +329,7 @@ body:
     {
         "id" : 1L,
         "name" : "안녕",
-        "blackjack.domain.result" : {
+        "result" : {
             "win" : 0,
             "draw" : 1,
             "lose" : 0
@@ -266,7 +339,7 @@ body:
     {
         "id" : 2L,
         "name" : "바이",
-        "blackjack.domain.result" : {
+        "result" : {
             "win" : 1,
             "draw" : 0,
             "lose" : 0
