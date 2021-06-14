@@ -20,10 +20,7 @@ public class BlackjackAcceptanceTest extends AcceptanceTest {
     @DisplayName("게임 생성")
     @Test
     void createGame() {
-        List<PlayerRequest> playerRequests = Arrays.asList(
-                new PlayerRequest("안녕", 1000),
-                new PlayerRequest("바이", 3000));
-        BlackjackGameRequest request = new BlackjackGameRequest(playerRequests);
+        BlackjackGameRequest request = 플레이어_요청생성();
 
         ExtractableResponse<Response> response = 게임생성(request);
 
@@ -38,10 +35,7 @@ public class BlackjackAcceptanceTest extends AcceptanceTest {
     @DisplayName("게임 전체 참가자 조회")
     @Test
     void findParticipants() {
-        List<PlayerRequest> playerRequests = Arrays.asList(
-                new PlayerRequest("안녕", 1000),
-                new PlayerRequest("바이", 3000));
-        BlackjackGameRequest request = new BlackjackGameRequest(playerRequests);
+        BlackjackGameRequest request = 플레이어_요청생성();
         Long gameId = 아이디조회(게임생성(request));
 
         ExtractableResponse<Response> response = RestAssured
@@ -58,10 +52,7 @@ public class BlackjackAcceptanceTest extends AcceptanceTest {
     @DisplayName("게임 플레이어 전체 조회")
     @Test
     void findPlayers() {
-        List<PlayerRequest> playerRequests = Arrays.asList(
-                new PlayerRequest("안녕", 1000),
-                new PlayerRequest("바이", 3000));
-        BlackjackGameRequest request = new BlackjackGameRequest(playerRequests);
+        BlackjackGameRequest request = 플레이어_요청생성();
         Long gameId = 아이디조회(게임생성(request));
 
         ExtractableResponse<Response> response = RestAssured
@@ -78,10 +69,7 @@ public class BlackjackAcceptanceTest extends AcceptanceTest {
     @DisplayName("게임 딜러 조회")
     @Test
     void findDealer() {
-        List<PlayerRequest> playerRequests = Arrays.asList(
-                new PlayerRequest("안녕", 1000),
-                new PlayerRequest("바이", 3000));
-        BlackjackGameRequest request = new BlackjackGameRequest(playerRequests);
+        BlackjackGameRequest request = 플레이어_요청생성();
         Long gameId = 아이디조회(게임생성(request));
 
         ExtractableResponse<Response> response = RestAssured
@@ -99,19 +87,12 @@ public class BlackjackAcceptanceTest extends AcceptanceTest {
     @DisplayName("개별 플레이어 조회")
     @Test
     void findPlayer() {
-        List<PlayerRequest> playerRequests = Arrays.asList(
-                new PlayerRequest("안녕", 1000),
-                new PlayerRequest("바이", 3000));
-        BlackjackGameRequest request = new BlackjackGameRequest(playerRequests);
+        BlackjackGameRequest request = 플레이어_요청생성();
         ExtractableResponse<Response> gameResponse = 게임생성(request);
         Long gameId = 아이디조회(gameResponse);
         Long playerId = gameResponse.as(BlackjackGameResponse.class).getParticipants().get(0).getParticipantId();
 
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .when().get("/api/blackjack/" + gameId + "/players/" + playerId)
-                .then().log().all()
-                .extract();
+        ExtractableResponse<Response> response = 플레이어_개별조회(gameId, playerId);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         ParticipantResponse participantResponse = response.as(ParticipantResponse.class);
@@ -122,19 +103,12 @@ public class BlackjackAcceptanceTest extends AcceptanceTest {
     @DisplayName("개별 플레이어 카드 받을 수 있는지 여부 조회")
     @Test
     void isPlayerAbleToTakeCard() {
-        List<PlayerRequest> playerRequests = Arrays.asList(
-                new PlayerRequest("안녕", 1000),
-                new PlayerRequest("바이", 3000));
-        BlackjackGameRequest request = new BlackjackGameRequest(playerRequests);
+        BlackjackGameRequest request = 플레이어_요청생성();
         ExtractableResponse<Response> gameResponse = 게임생성(request);
         Long gameId = 아이디조회(gameResponse);
         Long playerId = gameResponse.as(BlackjackGameResponse.class).getParticipants().get(0).getParticipantId();
 
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .when().get("/api/blackjack/" + gameId + "/players/" + playerId + "/availability")
-                .then().log().all()
-                .extract();
+        ExtractableResponse<Response> response = 플레이어_카드받기_가능_여부_조회(gameId, playerId);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         AvailabilityResponse availabilityResponse = response.as(AvailabilityResponse.class);
@@ -144,109 +118,98 @@ public class BlackjackAcceptanceTest extends AcceptanceTest {
     @DisplayName("개별 플레이어 카드 받기 - isTaking: true")
     @Test
     void isTakingTrue() {
-        List<PlayerRequest> playerRequests = Arrays.asList(
-                new PlayerRequest("안녕", 1000),
-                new PlayerRequest("바이", 3000));
-        BlackjackGameRequest request = new BlackjackGameRequest(playerRequests);
+        BlackjackGameRequest request = 플레이어_요청생성();
         ExtractableResponse<Response> gameResponse = 게임생성(request);
         Long gameId = 아이디조회(gameResponse);
         Long playerId = gameResponse.as(BlackjackGameResponse.class).getParticipants().get(0).getParticipantId();
 
         CardTakingRequest cardTakingRequest = new CardTakingRequest(true);
 
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .body(cardTakingRequest)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/api/blackjack/" + gameId + "/players/" + playerId)
-                .then().log().all()
-                .extract();
+        boolean isAbleToTake = 플레이어_카드받기_가능_여부_조회(gameId, playerId).as(AvailabilityResponse.class).getIsAbleToTake();
 
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        if (isAbleToTake) {
+            ExtractableResponse<Response> response = RestAssured
+                    .given().log().all()
+                    .body(cardTakingRequest)
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .accept(MediaType.APPLICATION_JSON_VALUE)
+                    .when().post("/api/blackjack/" + gameId + "/players/" + playerId)
+                    .then().log().all()
+                    .extract();
 
-        ExtractableResponse<Response> afterResponse = RestAssured
-                .given().log().all()
-                .when().get("/api/blackjack/" + gameId + "/players/" + playerId)
-                .then().log().all()
-                .extract();
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+            ExtractableResponse<Response> afterResponse = 플레이어_개별조회(gameId, playerId);
+            assertThat(afterResponse.as(ParticipantResponse.class).getCards()).hasSize(3);
 
-        assertThat(afterResponse.as(ParticipantResponse.class).getCards()).hasSize(3);
+        }
     }
 
     @DisplayName("개별 플레이어 카드 받기 - isTaking: false")
     @Test
     void isTakingFalse() {
-        List<PlayerRequest> playerRequests = Arrays.asList(
-                new PlayerRequest("안녕", 1000),
-                new PlayerRequest("바이", 3000));
-        BlackjackGameRequest request = new BlackjackGameRequest(playerRequests);
+        BlackjackGameRequest request = 플레이어_요청생성();
         ExtractableResponse<Response> gameResponse = 게임생성(request);
         Long gameId = 아이디조회(gameResponse);
         Long playerId = gameResponse.as(BlackjackGameResponse.class).getParticipants().get(0).getParticipantId();
 
         CardTakingRequest cardTakingRequest = new CardTakingRequest(false);
 
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .body(cardTakingRequest)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/api/blackjack/" + gameId + "/players/" + playerId)
-                .then().log().all()
-                .extract();
 
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        boolean isAbleToTake = 플레이어_카드받기_가능_여부_조회(gameId, playerId).as(AvailabilityResponse.class).getIsAbleToTake();
 
-        ExtractableResponse<Response> afterResponse = RestAssured
-                .given().log().all()
-                .when().get("/api/blackjack/" + gameId + "/players/" + playerId)
-                .then().log().all()
-                .extract();
+        if (isAbleToTake) {
+            ExtractableResponse<Response> response = RestAssured
+                    .given().log().all()
+                    .body(cardTakingRequest)
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .accept(MediaType.APPLICATION_JSON_VALUE)
+                    .when().post("/api/blackjack/" + gameId + "/players/" + playerId)
+                    .then().log().all()
+                    .extract();
 
-        assertThat(afterResponse.as(ParticipantResponse.class).getCards()).hasSize(2);
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+
+            ExtractableResponse<Response> afterResponse = 플레이어_개별조회(gameId, playerId);
+
+            assertThat(afterResponse.as(ParticipantResponse.class).getCards()).hasSize(2);
+        }
     }
 
     @DisplayName("딜러 카드 받을 수 있는지 여부 조회")
     @Test
     void isDealerAbleToTakeCard() {
-        List<PlayerRequest> playerRequests = Arrays.asList(
-                new PlayerRequest("안녕", 1000),
-                new PlayerRequest("바이", 3000));
-        BlackjackGameRequest request = new BlackjackGameRequest(playerRequests);
+        BlackjackGameRequest request = 플레이어_요청생성();
         ExtractableResponse<Response> gameResponse = 게임생성(request);
         Long gameId = 아이디조회(gameResponse);
         Long dealerId = gameResponse.as(BlackjackGameResponse.class).getDealer().getParticipantId();
 
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .when().get("/api/blackjack/" + gameId + "/dealer/" + dealerId + "/availability")
-                .then().log().all()
-                .extract();
+        ExtractableResponse<Response> response = 딜러_카드받기_가능_여부_조회(gameId, dealerId);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         AvailabilityResponse availabilityResponse = response.as(AvailabilityResponse.class);
         assertThat(availabilityResponse.getIsAbleToTake()).isNotNull();
     }
 
+
     @DisplayName("딜러 카드 받기")
     @Test
     void takeDealerCard() {
-        List<PlayerRequest> playerRequests = Arrays.asList(
-                new PlayerRequest("안녕", 1000),
-                new PlayerRequest("바이", 3000));
-        BlackjackGameRequest request = new BlackjackGameRequest(playerRequests);
+        BlackjackGameRequest request = 플레이어_요청생성();
         ExtractableResponse<Response> gameResponse = 게임생성(request);
         Long gameId = 아이디조회(gameResponse);
         Long dealerId = gameResponse.as(BlackjackGameResponse.class).getDealer().getParticipantId();
 
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .when().post("/api/blackjack/" + gameId + "/dealer/" + dealerId )
-                .then().log().all()
-                .extract();
+        boolean isAbleToTake = 딜러_카드받기_가능_여부_조회(gameId, dealerId).as(AvailabilityResponse.class).getIsAbleToTake();
 
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        if (isAbleToTake) {
+            ExtractableResponse<Response> response = RestAssured
+                    .given().log().all()
+                    .when().post("/api/blackjack/" + gameId + "/dealer/" + dealerId)
+                    .then().log().all()
+                    .extract();
+
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        }
     }
 
     private Long 아이디조회(ExtractableResponse<Response> response) {
@@ -260,6 +223,37 @@ public class BlackjackAcceptanceTest extends AcceptanceTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(request)
                 .when().post("/api/blackjack")
+                .then().log().all()
+                .extract();
+    }
+
+    private ExtractableResponse<Response> 플레이어_카드받기_가능_여부_조회(Long gameId, Long playerId) {
+        return RestAssured
+                .given().log().all()
+                .when().get("/api/blackjack/" + gameId + "/players/" + playerId + "/availability")
+                .then().log().all()
+                .extract();
+    }
+
+    private ExtractableResponse<Response> 딜러_카드받기_가능_여부_조회(Long gameId, Long dealerId) {
+        return RestAssured
+                .given().log().all()
+                .when().get("/api/blackjack/" + gameId + "/dealer/" + dealerId + "/availability")
+                .then().log().all()
+                .extract();
+    }
+
+    private BlackjackGameRequest 플레이어_요청생성() {
+        List<PlayerRequest> playerRequests = Arrays.asList(
+                new PlayerRequest("안녕", 1000),
+                new PlayerRequest("바이", 3000));
+        return new BlackjackGameRequest(playerRequests);
+    }
+
+    private ExtractableResponse<Response> 플레이어_개별조회(Long gameId, Long playerId) {
+        return RestAssured
+                .given().log().all()
+                .when().get("/api/blackjack/" + gameId + "/players/" + playerId)
                 .then().log().all()
                 .extract();
     }

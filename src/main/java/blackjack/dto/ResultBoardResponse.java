@@ -18,8 +18,8 @@ public class ResultBoardResponse {
         this.lose = lose;
     }
 
-    public static ResultBoardResponse of(Map<Result, Integer> results){
-        return new ResultBoardResponse(results.get(Result.WIN),results.get(Result.DRAW),results.get(Result.LOSE));
+    public static ResultBoardResponse of(Map<Result, Integer> results) {
+        return new ResultBoardResponse(results.get(Result.WIN), results.get(Result.DRAW), results.get(Result.LOSE));
     }
 
     public Integer getWin() {
