@@ -3,6 +3,7 @@ package blackjack.domain.result;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static blackjack.domain.result.Result.*;
@@ -43,7 +44,7 @@ public class ParticipantResult {
         return name;
     }
 
-    public HashMap<Result, Integer> getResults() {
+    public Map<Result, Integer> getResults() {
         return results;
     }
 

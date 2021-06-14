@@ -11,6 +11,7 @@ import blackjack.domain.state.State;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class BlackjackGame {
     private final Long id;
@@ -69,7 +70,7 @@ public class BlackjackGame {
         return dealer.takeCardForDealer(deck.drawCard());
     }
 
-    public List<ParticipantResult> getResult() {
+    public Map<Participant, ParticipantResult> getResult() {
         List<Participant> participants = new ArrayList<>();
         participants.add(dealer);
         participants.addAll(players);

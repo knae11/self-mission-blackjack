@@ -357,7 +357,7 @@ body:
 status: ok
 ```
 
-- [ ] 전체 결과 조회
+- [x] 전체 결과 조회
 - get `/api/blackjack/{gameId}/result`
 ```text
 <response>
@@ -370,7 +370,22 @@ body:
             "win" : 0,
             "draw" : 1,
             "lose" : 1
-        }
+        },
+        "cards": 
+            [
+                {
+                    "suit": "c",
+                    "denomination": "2"
+                },
+                {
+                    "suit": "c",
+                    "denomination": "2"
+                },
+                {
+                    "suit": "c",
+                    "denomination": "9"
+                }
+            ],
         "money" : -1500
     },
     {
@@ -380,7 +395,22 @@ body:
             "win" : 0,
             "draw" : 1,
             "lose" : 0
-        }
+        },
+        "cards": 
+            [
+                {
+                    "suit": "c",
+                    "denomination": "2"
+                },
+                {
+                    "suit": "c",
+                    "denomination": "2"
+                },
+                {
+                    "suit": "c",
+                    "denomination": "9"
+                }
+            ],
         "money" : 1000
     },
     {
@@ -390,7 +420,22 @@ body:
             "win" : 1,
             "draw" : 0,
             "lose" : 0
-        }
+        },
+        "cards": 
+            [
+                {
+                    "suit": "c",
+                    "denomination": "2"
+                },
+                {
+                    "suit": "c",
+                    "denomination": "2"
+                },
+                {
+                    "suit": "c",
+                    "denomination": "9"
+                }
+            ],
         "money" : 4500
     },
 ]

@@ -2,6 +2,7 @@ package blackjack.domain;
 
 import blackjack.domain.card.*;
 import blackjack.domain.participant.Dealer;
+import blackjack.domain.participant.Participant;
 import blackjack.domain.participant.Player;
 import blackjack.domain.result.ParticipantResult;
 import blackjack.domain.state.Blackjack;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -188,7 +190,7 @@ public class BlackjackGameTest {
         BlackjackGame blackjackGame = new BlackjackGame(dealer, players);
 
         // when
-        List<ParticipantResult> result = blackjackGame.getResult();
+        Map<Participant, ParticipantResult> result = blackjackGame.getResult();
 
         // then
         assertThat(result).hasSize(3);

@@ -19,21 +19,21 @@ public class ResultBoard {
         this.players = players;
     }
 
-    public List<ParticipantResult> getResults() {
+    public Map<Participant, ParticipantResult> getResults() {
         final Map<Player, Result> playerResults = getPlayerResults();
         final Map<Participant, Integer> moneyResults = getMoneyResults(playerResults);
 
         return getParticipantFinalResults(playerResults, moneyResults);
     }
 
-    private List<ParticipantResult> getParticipantFinalResults(Map<Player, Result> playerResults, Map<Participant, Integer> moneyResults) {
-        final List<ParticipantResult> finalResults = new ArrayList<>();
+    private Map<Participant, ParticipantResult> getParticipantFinalResults(Map<Player, Result> playerResults, Map<Participant, Integer> moneyResults) {
+        final Map<Participant, ParticipantResult> finalResults = new HashMap<>();
 
-        finalResults.add(ParticipantResult.createDealer(
+        finalResults.put(dealer, ParticipantResult.createDealer(
                 dealer.getName(), new ArrayList<>(playerResults.values()), moneyResults.get(dealer)));
 
         for (Player player : players) {
-            finalResults.add(
+            finalResults.put(player,
                     ParticipantResult.createPlayer(player.getName(), playerResults.get(player), moneyResults.get(player)));
         }
 

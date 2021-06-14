@@ -75,10 +75,16 @@ public class BlackjackController {
                 .body(availabilityResponse);
     }
 
-
     @PostMapping("/{gameId}/dealer/{dealerId}")
     public ResponseEntity<Void> takeDealerCard(@PathVariable Long gameId, @PathVariable Long dealerId) {
         blackjackService.takeDealerCard(gameId, dealerId);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @GetMapping("/{gameId}/result")
+    public ResponseEntity<List<ResultResponse>> getResult(@PathVariable Long gameId) {
+        List<ResultResponse> resultResponses = blackjackService.getResult(gameId);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(resultResponses);
     }
 }

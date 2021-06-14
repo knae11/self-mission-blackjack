@@ -7,13 +7,15 @@ import blackjack.dao.StateDao;
 import blackjack.domain.BlackjackGame;
 import blackjack.domain.card.Deck;
 import blackjack.domain.participant.Dealer;
+import blackjack.domain.participant.Participant;
 import blackjack.domain.participant.Player;
-import blackjack.domain.state.State;
+import blackjack.domain.result.ParticipantResult;
 import blackjack.dto.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -127,5 +129,21 @@ public class BlackjackService {
 
         deckDao.update(deck);
         stateDao.updateByParticipant(dealer);
+    }
+
+    public List<ResultResponse> getResult(Long gameId) {
+        Long dealerId = blackjackgameDao.findDealerId(gameId);
+        String playerIdValues = blackjackgameDao.findPlayerIds(gameId);
+        List<Long> playerIds = ListConvertor.depressPlayerIds(playerIdValues);
+
+        Dealer dealer = participantDao.findDealerById(dealerId);
+        List<Player> players = playerIds.stream()
+                .map(participantDao::findPlayerById)
+                .collect(Collectors.toList());
+
+        BlackjackGame blackjackGame = new BlackjackGame(dealer, players);
+        Map<Participant, ParticipantResult> result = blackjackGame.getResult();
+
+        return ResultResponse.listOf(result);
     }
 }

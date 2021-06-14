@@ -5,6 +5,7 @@ import blackjack.domain.card.Cards;
 import blackjack.domain.card.Denomination;
 import blackjack.domain.card.Suit;
 import blackjack.domain.participant.Dealer;
+import blackjack.domain.participant.Participant;
 import blackjack.domain.participant.Player;
 import blackjack.domain.state.Blackjack;
 import blackjack.domain.state.Stay;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -42,18 +44,18 @@ public class ResultBoardTest {
                 Card.of(Suit.SPADE, Denomination.TWO));
 
         Dealer dealer = new Dealer(new Stay(new Cards(dealerCards)));
-        List<Player> players = Arrays.asList(
-                new Player("배럴", 1000, new Blackjack(new Cards(p1Cards))),
-                new Player("bet", 1000, new Stay(new Cards(p2Cards))));
+        Player p1 = new Player("배럴", 1000, new Blackjack(new Cards(p1Cards)));
+        Player p2 = new Player("bet", 1000, new Stay(new Cards(p2Cards)));
+        List<Player> players = Arrays.asList(p1, p2);
 
         ResultBoard resultBoard = new ResultBoard(dealer, players);
-        List<ParticipantResult> results = resultBoard.getResults();
+        Map<Participant, ParticipantResult> results = resultBoard.getResults();
         assertThat(results).hasSize(3);
-        assertThat(results.get(0).getName()).isEqualTo("딜러");
-        assertThat(results.get(1).getName()).isEqualTo("배럴");
-        assertThat(results.get(2).getName()).isEqualTo("bet");
-        assertThat(results.get(0).getMoneyResult()).isEqualTo(500);
-        assertThat(results.get(1).getMoneyResult()).isEqualTo(1500);
-        assertThat(results.get(2).getMoneyResult()).isEqualTo(0);
+        assertThat(results.get(dealer).getName()).isEqualTo("딜러");
+        assertThat(results.get(p1).getName()).isEqualTo("배럴");
+        assertThat(results.get(p2).getName()).isEqualTo("bet");
+        assertThat(results.get(dealer).getMoneyResult()).isEqualTo(500);
+        assertThat(results.get(p1).getMoneyResult()).isEqualTo(1500);
+        assertThat(results.get(p2).getMoneyResult()).isEqualTo(0);
     }
 }
