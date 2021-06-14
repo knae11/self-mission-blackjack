@@ -107,6 +107,25 @@ public class BlackjackService {
         blackjackGame.takeTurnOf(cardTakingRequest.getIsTaking(), player);
 
         deckDao.update(deck);
-        stateDao.updateByPlayer(player);
+        stateDao.updateByParticipant(player);
+    }
+
+    public AvailabilityResponse findDealerAbleToTake(Long dealerId) {
+        Dealer dealer = participantDao.findDealerById(dealerId);
+
+        return new AvailabilityResponse(dealer.isRunning());
+    }
+
+    @Transactional
+    public void takeDealerCard(Long gameId, Long dealerId) {
+        Long deckId = blackjackgameDao.findDeckId(gameId);
+        Deck deck = deckDao.findDeckById(deckId);
+        Dealer dealer = participantDao.findDealerById(dealerId);
+
+        BlackjackGame blackjackGame = new BlackjackGame(dealer, deck);
+        blackjackGame.takeTurnOf(dealer);
+
+        deckDao.update(deck);
+        stateDao.updateByParticipant(dealer);
     }
 }

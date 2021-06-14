@@ -207,6 +207,48 @@ public class BlackjackAcceptanceTest extends AcceptanceTest {
         assertThat(afterResponse.as(ParticipantResponse.class).getCards()).hasSize(2);
     }
 
+    @DisplayName("딜러 카드 받을 수 있는지 여부 조회")
+    @Test
+    void isDealerAbleToTakeCard() {
+        List<PlayerRequest> playerRequests = Arrays.asList(
+                new PlayerRequest("안녕", 1000),
+                new PlayerRequest("바이", 3000));
+        BlackjackGameRequest request = new BlackjackGameRequest(playerRequests);
+        ExtractableResponse<Response> gameResponse = 게임생성(request);
+        Long gameId = 아이디조회(gameResponse);
+        Long dealerId = gameResponse.as(BlackjackGameResponse.class).getDealer().getParticipantId();
+
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .when().get("/api/blackjack/" + gameId + "/dealer/" + dealerId + "/availability")
+                .then().log().all()
+                .extract();
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        AvailabilityResponse availabilityResponse = response.as(AvailabilityResponse.class);
+        assertThat(availabilityResponse.getIsAbleToTake()).isNotNull();
+    }
+
+    @DisplayName("딜러 카드 받기")
+    @Test
+    void takeDealerCard() {
+        List<PlayerRequest> playerRequests = Arrays.asList(
+                new PlayerRequest("안녕", 1000),
+                new PlayerRequest("바이", 3000));
+        BlackjackGameRequest request = new BlackjackGameRequest(playerRequests);
+        ExtractableResponse<Response> gameResponse = 게임생성(request);
+        Long gameId = 아이디조회(gameResponse);
+        Long dealerId = gameResponse.as(BlackjackGameResponse.class).getDealer().getParticipantId();
+
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .when().post("/api/blackjack/" + gameId + "/dealer/" + dealerId )
+                .then().log().all()
+                .extract();
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+    }
+
     private Long 아이디조회(ExtractableResponse<Response> response) {
         return response.as(BlackjackGameResponse.class).getGameId();
     }

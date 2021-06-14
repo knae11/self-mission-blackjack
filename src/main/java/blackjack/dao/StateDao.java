@@ -2,6 +2,8 @@ package blackjack.dao;
 
 import blackjack.application.ListConvertor;
 import blackjack.application.StateFinder;
+import blackjack.domain.participant.Dealer;
+import blackjack.domain.participant.Participant;
 import blackjack.domain.participant.Player;
 import blackjack.domain.state.State;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,8 +26,9 @@ public class StateDao {
 
     }
 
-    public void updateByPlayer(Player player) {
+    public void updateByParticipant(Participant participant) {
         String sql = "UPDATE state SET name = ?, card_ids = ? WHERE participant_id = ?";
-        jdbcTemplate.update(sql, player.getStateToString(), ListConvertor.compressCardIds(player.getCards()), player.getId());
+        jdbcTemplate.update(sql, participant.getStateToString(), ListConvertor.compressCardIds(participant.getCards()), participant.getId());
     }
+
 }
