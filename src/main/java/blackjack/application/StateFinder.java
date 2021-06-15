@@ -2,6 +2,7 @@ package blackjack.application;
 
 import blackjack.domain.card.Cards;
 import blackjack.domain.state.*;
+import blackjack.exception.web.StateNotFoundException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +41,7 @@ public class StateFinder {
         Predicate<State> foundState = compressCache.keySet().stream()
                 .filter(state -> state.test(stateValue))
                 .findFirst()
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(StateNotFoundException::new);
         return compressCache.get(foundState);
     }
 }

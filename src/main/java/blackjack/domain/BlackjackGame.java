@@ -7,6 +7,7 @@ import blackjack.domain.participant.Player;
 import blackjack.domain.result.ParticipantResult;
 import blackjack.domain.result.ResultBoard;
 import blackjack.domain.state.State;
+import blackjack.exception.domain.GameNotEndException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -80,6 +81,6 @@ public class BlackjackGame {
             ResultBoard resultBoard = new ResultBoard(dealer, players);
             return resultBoard.getResults();
         }
-        throw new IllegalArgumentException();
+        throw new GameNotEndException();
     }
 }

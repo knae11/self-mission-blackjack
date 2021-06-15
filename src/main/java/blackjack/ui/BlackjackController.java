@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.util.List;
 
@@ -19,7 +21,7 @@ public class BlackjackController {
     }
 
     @PostMapping
-    public ResponseEntity<BlackjackGameResponse> createRoom(@RequestBody BlackjackGameRequest blackjackGameRequest) {
+    public ResponseEntity<BlackjackGameResponse> createRoom(@RequestBody @Valid BlackjackGameRequest blackjackGameRequest) {
         List<PlayerRequest> playerRequests = blackjackGameRequest.getPlayerRequests();
         BlackjackGameResponse blackjackGameResponse = blackjackService.createGame(playerRequests);
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -28,61 +30,61 @@ public class BlackjackController {
     }
 
     @GetMapping("/{gameId}")
-    public ResponseEntity<BlackjackGameResponse> findParticipants(@PathVariable Long gameId) {
+    public ResponseEntity<BlackjackGameResponse> findParticipants(@PathVariable @NotNull Long gameId) {
         BlackjackGameResponse blackjackGameResponse = blackjackService.findParticipants(gameId);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(blackjackGameResponse);
     }
 
     @GetMapping("/{gameId}/players")
-    public ResponseEntity<ParticipantsResponse> findPlayers(@PathVariable Long gameId) {
+    public ResponseEntity<ParticipantsResponse> findPlayers(@PathVariable @NotNull Long gameId) {
         ParticipantsResponse participantsResponse = blackjackService.findPlayers(gameId);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(participantsResponse);
     }
 
     @GetMapping("/{gameId}/dealer")
-    public ResponseEntity<DealerResponse> findDealer(@PathVariable Long gameId) {
+    public ResponseEntity<DealerResponse> findDealer(@PathVariable @NotNull Long gameId) {
         DealerResponse dealerResponse = blackjackService.findDealer(gameId);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(dealerResponse);
     }
 
     @GetMapping("/{gameId}/players/{playerId}")
-    public ResponseEntity<ParticipantResponse> findDealer(@PathVariable Long gameId, @PathVariable Long playerId) {
+    public ResponseEntity<ParticipantResponse> findPlayer(@PathVariable @NotNull Long gameId, @PathVariable @NotNull Long playerId) {
         ParticipantResponse participantResponse = blackjackService.findPlayer(playerId);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(participantResponse);
     }
 
     @GetMapping("/{gameId}/players/{playerId}/availability")
-    public ResponseEntity<AvailabilityResponse> findPlayerAbleToTake(@PathVariable Long gameId, @PathVariable Long playerId) {
+    public ResponseEntity<AvailabilityResponse> findPlayerAbleToTake(@PathVariable @NotNull Long gameId, @PathVariable @NotNull Long playerId) {
         AvailabilityResponse availabilityResponse = blackjackService.findPlayerAbleToTake(playerId);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(availabilityResponse);
     }
 
     @PostMapping("/{gameId}/players/{playerId}")
-    public ResponseEntity<Void> takePlayerCard(@PathVariable Long gameId, @PathVariable Long playerId, @RequestBody CardTakingRequest cardTakingRequest) {
+    public ResponseEntity<Void> takePlayerCard(@PathVariable @NotNull Long gameId, @PathVariable @NotNull Long playerId, @RequestBody @Valid CardTakingRequest cardTakingRequest) {
         blackjackService.takePlayerCard(gameId, playerId, cardTakingRequest);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping("/{gameId}/dealer/{dealerId}/availability")
-    public ResponseEntity<AvailabilityResponse> findDealerAbleToTake(@PathVariable Long gameId, @PathVariable Long dealerId) {
+    public ResponseEntity<AvailabilityResponse> findDealerAbleToTake(@PathVariable @NotNull Long gameId, @PathVariable @NotNull Long dealerId) {
         AvailabilityResponse availabilityResponse = blackjackService.findDealerAbleToTake(dealerId);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(availabilityResponse);
     }
 
     @PostMapping("/{gameId}/dealer/{dealerId}")
-    public ResponseEntity<Void> takeDealerCard(@PathVariable Long gameId, @PathVariable Long dealerId) {
+    public ResponseEntity<Void> takeDealerCard(@PathVariable @NotNull Long gameId, @PathVariable @NotNull Long dealerId) {
         blackjackService.takeDealerCard(gameId, dealerId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping("/{gameId}/result")
-    public ResponseEntity<List<ResultResponse>> getResult(@PathVariable Long gameId) {
+    public ResponseEntity<List<ResultResponse>> getResult(@PathVariable @NotNull Long gameId) {
         List<ResultResponse> resultResponses = blackjackService.getResult(gameId);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(resultResponses);

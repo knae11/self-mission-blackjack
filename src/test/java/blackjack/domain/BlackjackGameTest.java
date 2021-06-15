@@ -9,6 +9,7 @@ import blackjack.domain.state.Blackjack;
 import blackjack.domain.state.Hit;
 import blackjack.domain.state.State;
 import blackjack.domain.state.Stay;
+import blackjack.exception.domain.GameNotEndException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -211,6 +212,6 @@ public class BlackjackGameTest {
         BlackjackGame blackjackGame = new BlackjackGame(dealer, players);
 
         // when, then
-        assertThatThrownBy(blackjackGame::getResult).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(blackjackGame::getResult).isInstanceOf(GameNotEndException.class);
     }
 }

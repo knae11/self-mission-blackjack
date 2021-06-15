@@ -2,7 +2,7 @@ package blackjack.domain.state;
 
 import blackjack.domain.card.Card;
 import blackjack.domain.card.Cards;
-import blackjack.exception.card.CardCannotTakeException;
+import blackjack.exception.domain.card.CardCannotTakeException;
 
 import java.util.List;
 

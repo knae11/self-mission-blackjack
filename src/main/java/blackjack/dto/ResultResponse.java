@@ -4,6 +4,7 @@ import blackjack.domain.participant.Dealer;
 import blackjack.domain.participant.Participant;
 import blackjack.domain.participant.Player;
 import blackjack.domain.result.ParticipantResult;
+import blackjack.exception.web.DealerNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -65,7 +66,7 @@ public class ResultResponse {
                 .filter(participant -> !participant.isPlayer())
                 .map(x -> (Dealer) x)
                 .findFirst()
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(DealerNotFoundException::new);
     }
 
     public Long getId() {

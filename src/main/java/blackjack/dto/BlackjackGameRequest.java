@@ -1,9 +1,12 @@
 package blackjack.dto;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public class BlackjackGameRequest {
-    private List<PlayerRequest> playerRequests;
+    @NotNull
+    private List<@Valid PlayerRequest> playerRequests;
 
     public BlackjackGameRequest() {
     }

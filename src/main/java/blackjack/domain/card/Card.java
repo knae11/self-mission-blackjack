@@ -1,6 +1,6 @@
 package blackjack.domain.card;
 
-import blackjack.exception.card.CardInvalidException;
+import blackjack.exception.domain.card.CardInvalidException;
 
 import java.util.ArrayList;
 import java.util.HashMap;

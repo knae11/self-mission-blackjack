@@ -1,6 +1,6 @@
 package blackjack.domain.card;
 
-import blackjack.exception.card.EmptyException;
+import blackjack.exception.domain.card.CardEmptyException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -80,6 +80,6 @@ public class DeckTest {
         Deck deck = Deck.listOf(cards);
         assertThat(deck.drawTwoCards());
 
-        assertThatThrownBy(deck::drawTwoCards).isInstanceOf(EmptyException.class);
+        assertThatThrownBy(deck::drawTwoCards).isInstanceOf(CardEmptyException.class);
     }
 }

@@ -1,7 +1,7 @@
 package blackjack.domain.card;
 
 import blackjack.application.ListConvertor;
-import blackjack.exception.card.EmptyException;
+import blackjack.exception.domain.card.CardEmptyException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,7 +51,7 @@ public class Deck {
 
     public Card drawCard() {
         if (cards.size() <= ZERO) {
-            throw new EmptyException();
+            throw new CardEmptyException();
         }
         return cards.remove(cards.size() - 1);
     }

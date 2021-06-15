@@ -1,6 +1,6 @@
 package blackjack.domain.card;
 
-import blackjack.exception.card.EmptyException;
+import blackjack.exception.domain.card.CardEmptyException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,7 +38,7 @@ public class Cards {
         return this.cards.stream()
                 .mapToInt(Card::getScore)
                 .reduce(Integer::sum)
-                .orElseThrow(EmptyException::new);
+                .orElseThrow(CardEmptyException::new);
 
     }
 

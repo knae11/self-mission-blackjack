@@ -3,8 +3,8 @@ package blackjack.domain.state;
 import blackjack.domain.card.Card;
 import blackjack.domain.card.Denomination;
 import blackjack.domain.card.Suit;
-import blackjack.exception.card.CardCannotTakeException;
-import blackjack.exception.card.EmptyException;
+import blackjack.exception.domain.card.CardCannotTakeException;
+import blackjack.exception.domain.card.CardEmptyException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -66,6 +66,6 @@ public class InitTurnTest {
         Running initTurn = new InitTurn();
 
         assertThatThrownBy(initTurn::calculateScore)
-                .isInstanceOf(EmptyException.class);
+                .isInstanceOf(CardEmptyException.class);
     }
 }

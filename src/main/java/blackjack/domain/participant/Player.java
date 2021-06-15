@@ -4,6 +4,7 @@ import blackjack.application.StateFinder;
 import blackjack.domain.card.Card;
 import blackjack.domain.state.InitTurn;
 import blackjack.domain.state.State;
+import blackjack.exception.domain.card.CardCannotTakeException;
 
 import java.util.List;
 
@@ -63,7 +64,7 @@ public class Player implements Participant {
 
     @Override
     public State takeCardForDealer(Card value) {
-        throw new IllegalArgumentException();
+        throw new CardCannotTakeException();
     }
 
     @Override
