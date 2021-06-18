@@ -32,6 +32,14 @@ public class DeckDao {
         return Deck.of(deckId, deck);
     }
 
+    public Deck create1(Deck deck, Long gameId) {
+        String sql = "INSERT INTO deck (card, game_id) VALUES (?,?)";
+        Map<String, Object> params = new HashMap<>();
+        params.put("card_ids", deck.getCardIds());
+        long deckId = simpleJdbcInsert.executeAndReturnKey(params).longValue();
+        return Deck.of(deckId, deck);
+    }
+
     public Deck findDeckById(Long deckId) {
         String sql = "SELECT card_ids FROM deck WHERE deck_id = ?";
         String cardIds = jdbcTemplate.queryForObject(sql, String.class, deckId);

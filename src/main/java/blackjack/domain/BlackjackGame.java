@@ -47,6 +47,29 @@ public class BlackjackGame {
         this(dealer, players, null);
     }
 
+    public static BlackjackGame createInitial(List<Player> players) {
+        BlackjackGame blackjackGame = new BlackjackGame(new Dealer(), players, Deck.createShuffled());
+        blackjackGame.initGame();
+
+        return blackjackGame;
+    }
+
+    public static BlackjackGame create(long id, Dealer dealer, List<Player> players, Deck deck) {
+        return new BlackjackGame(id, dealer, players, deck);
+    }
+
+    public static BlackjackGame create(long gameId, Dealer dealer, List<Player> players) {
+        return new BlackjackGame(gameId, dealer, players, null);
+    }
+
+    public static BlackjackGame create(long gameId, Player player, Deck deck) {
+        return new BlackjackGame(gameId, null, Collections.singletonList(player), deck);
+    }
+
+    public static BlackjackGame create(long id, Dealer dealer, Deck deck) {
+        return new BlackjackGame(id, dealer, null, deck);
+    }
+
     public void initGame() {
         List<Participant> participants = new ArrayList<>();
         participants.add(dealer);
@@ -83,4 +106,22 @@ public class BlackjackGame {
         }
         throw new GameNotEndException();
     }
+
+    public Dealer getDealer() {
+        return dealer;
+    }
+
+    public List<Player> getPlayers() {
+        return new ArrayList<>(players);
+    }
+
+    public Deck getDeck() {
+        return deck;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+
 }

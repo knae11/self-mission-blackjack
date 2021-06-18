@@ -50,6 +50,10 @@ public class Player implements Participant {
         ;
     }
 
+    public static Player create(Long id, Player player) {
+        return new Player(id, player.name, player.initialBetting, player.state);
+    }
+
     @Override
     public State takeCards(List<Card> cards) {
         this.state = state.takeCardsForPlayer(cards);

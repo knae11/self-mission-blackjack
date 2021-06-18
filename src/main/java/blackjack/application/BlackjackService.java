@@ -1,16 +1,14 @@
 package blackjack.application;
 
-import blackjack.dao.BlackjackGameDao;
-import blackjack.dao.DeckDao;
-import blackjack.dao.ParticipantDao;
-import blackjack.dao.StateDao;
+import blackjack.dao.*;
 import blackjack.domain.BlackjackGame;
-import blackjack.domain.card.Deck;
+import blackjack.domain.card.Card;
 import blackjack.domain.participant.Dealer;
 import blackjack.domain.participant.Participant;
 import blackjack.domain.participant.Player;
 import blackjack.domain.result.ParticipantResult;
 import blackjack.dto.*;
+import blackjack.exception.web.ParticipantIdNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,123 +23,109 @@ public class BlackjackService {
     private final DeckDao deckDao;
     private final ParticipantDao participantDao;
     private final StateDao stateDao;
+    private final PlayerDao playerDao;
+    private final DealerDao dealerDao;
+    private final DeckCardDao deckCardDao;
 
-    public BlackjackService(BlackjackGameDao blackjackgameDao, DeckDao deckDao, ParticipantDao participantDao, StateDao stateDao) {
+    public BlackjackService(BlackjackGameDao blackjackgameDao, DeckDao deckDao, ParticipantDao participantDao, StateDao stateDao, PlayerDao playerDao, DealerDao dealerDao, DeckCardDao deckCardDao) {
         this.blackjackgameDao = blackjackgameDao;
         this.deckDao = deckDao;
         this.participantDao = participantDao;
         this.stateDao = stateDao;
+        this.playerDao = playerDao;
+        this.dealerDao = dealerDao;
+        this.deckCardDao = deckCardDao;
     }
 
     @Transactional
     public BlackjackGameResponse createGame(List<PlayerRequest> playerRequests) {
-        Deck deck = Deck.createShuffled();
-        List<Player> players = playerRequests.stream()
+        List<Player> players1 = convertToPlayers(playerRequests);
+        BlackjackGame game = BlackjackGame.createInitial(players1);
+        BlackjackGame createdGame = blackjackgameDao.create(game);
+
+        return new BlackjackGameResponse(createdGame.getId(),
+                DealerResponse.of(createdGame.getDealer()),
+                ParticipantResponse.listOf(createdGame.getPlayers()));
+    }
+
+    private List<Player> convertToPlayers(List<PlayerRequest> playerRequests) {
+        return playerRequests.stream()
                 .map(request -> new Player(request.getName(), request.getBettingMoney()))
                 .collect(Collectors.toList());
-        Dealer dealer = new Dealer();
-        BlackjackGame blackjackGame = new BlackjackGame(dealer, players, deck);
-        blackjackGame.initGame();
-
-        Dealer createdDealer = participantDao.createDealer(dealer);
-        List<Player> createdPlayers = players.stream()
-                .map(participantDao::createPlayer)
-                .collect(Collectors.toList());
-        Deck createdDeck = deckDao.create(deck);
-
-        String playerIds = ListConvertor.compressPlayerIds(createdPlayers);
-
-        Long gameId = blackjackgameDao.create(createdDealer.getId(), playerIds, createdDeck.getId());
-
-
-        return new BlackjackGameResponse(gameId, DealerResponse.of(createdDealer), ParticipantResponse.listOf(createdPlayers));
     }
 
     public BlackjackGameResponse findParticipants(Long gameId) {
-        Long dealerId = blackjackgameDao.findDealerId(gameId);
-        List<Long> playerIds = ListConvertor.depressPlayerIds(blackjackgameDao.findPlayerIds(gameId));
+        BlackjackGame blackjackGame = blackjackgameDao.findByGameId(gameId);
 
-        Dealer dealer = participantDao.findDealerById(dealerId);
-        List<Player> players = playerIds.stream()
-                .map(participantDao::findPlayerById)
-                .collect(Collectors.toList());
-
-        return new BlackjackGameResponse(gameId, DealerResponse.of(dealer), ParticipantResponse.listOf(players));
+        return new BlackjackGameResponse(gameId,
+                DealerResponse.of(blackjackGame.getDealer()),
+                ParticipantResponse.listOf(blackjackGame.getPlayers()));
     }
 
     public ParticipantsResponse findPlayers(Long gameId) {
-        List<Long> playerIds = ListConvertor.depressPlayerIds(blackjackgameDao.findPlayerIds(gameId));
-
-        List<Player> players = playerIds.stream()
-                .map(participantDao::findPlayerById)
-                .collect(Collectors.toList());
+        List<Player> players = playerDao.findPlayersByGameId(gameId);
 
         return new ParticipantsResponse(ParticipantResponse.listOf(players));
     }
 
     public DealerResponse findDealer(Long gameId) {
-        Long dealerId = blackjackgameDao.findDealerId(gameId);
-
-        Dealer dealer = participantDao.findDealerById(dealerId);
+        Dealer dealer = dealerDao.findByGameId(gameId);
 
         return DealerResponse.of(dealer);
     }
 
-    public ParticipantResponse findPlayer(Long playerId) {
-        Player player = participantDao.findPlayerById(playerId);
+    public ParticipantResponse findPlayer(Long gameId, Long playerId) {
+        Player player = playerDao.findByIds(gameId, playerId);
 
         return ParticipantResponse.of(player);
     }
 
-    public AvailabilityResponse findPlayerAbleToTake(Long playerId) {
-        Player player = participantDao.findPlayerById(playerId);
+    public AvailabilityResponse findPlayerAbleToTake(Long gameId, Long playerId) {
+        Player player = playerDao.findByIds(gameId, playerId);
 
         return new AvailabilityResponse(player.isRunning());
     }
 
     @Transactional
     public void takePlayerCard(Long gameId, Long playerId, CardTakingRequest cardTakingRequest) {
-        Long deckId = blackjackgameDao.findDeckId(gameId);
-        Deck deck = deckDao.findDeckById(deckId);
-        Player player = participantDao.findPlayerById(playerId);
+        BlackjackGame game = blackjackgameDao.findForAPlayerTurn(gameId, playerId);
+        Player player = game.getPlayers()
+                .stream().filter(p -> p.getId().equals(playerId))
+                .findFirst()
+                .orElseThrow(ParticipantIdNotFoundException::new);
 
-        BlackjackGame blackjackGame = new BlackjackGame(player, deck);
-        blackjackGame.takeTurnOf(cardTakingRequest.getIsTaking(), player);
+        List<Card> previousCards = player.getCards();
+        game.takeTurnOf(cardTakingRequest.getIsTaking(), player);
+        List<Card> currentCards = player.getCards();
+        currentCards.removeAll(previousCards);
 
-        deckDao.update(deck);
-        stateDao.updateByParticipant(player);
+        deckCardDao.update(game.getDeck(), gameId);
+        playerDao.update(player, currentCards);
     }
 
-    public AvailabilityResponse findDealerAbleToTake(Long dealerId) {
-        Dealer dealer = participantDao.findDealerById(dealerId);
+    public AvailabilityResponse findDealerAbleToTake(Long gameId) {
+        Dealer dealer = dealerDao.findByGameId(gameId);
 
         return new AvailabilityResponse(dealer.isRunning());
     }
 
     @Transactional
     public void takeDealerCard(Long gameId, Long dealerId) {
-        Long deckId = blackjackgameDao.findDeckId(gameId);
-        Deck deck = deckDao.findDeckById(deckId);
-        Dealer dealer = participantDao.findDealerById(dealerId);
+        BlackjackGame game = blackjackgameDao.findForDealerTurn(gameId);
 
-        BlackjackGame blackjackGame = new BlackjackGame(dealer, deck);
-        blackjackGame.takeTurnOf(dealer);
+        Dealer dealer = game.getDealer();
+        List<Card> previousCards = dealer.getCards();
+        game.takeTurnOf(dealer);
+        List<Card> currentCards = dealer.getCards();
+        currentCards.removeAll(previousCards);
 
-        deckDao.update(deck);
-        stateDao.updateByParticipant(dealer);
+        deckCardDao.update(game.getDeck(), gameId);
+        dealerDao.update(dealer, currentCards);
     }
 
     public List<ResultResponse> getResult(Long gameId) {
-        Long dealerId = blackjackgameDao.findDealerId(gameId);
-        String playerIdValues = blackjackgameDao.findPlayerIds(gameId);
-        List<Long> playerIds = ListConvertor.depressPlayerIds(playerIdValues);
+        BlackjackGame blackjackGame = blackjackgameDao.findByGameId(gameId);
 
-        Dealer dealer = participantDao.findDealerById(dealerId);
-        List<Player> players = playerIds.stream()
-                .map(participantDao::findPlayerById)
-                .collect(Collectors.toList());
-
-        BlackjackGame blackjackGame = new BlackjackGame(dealer, players);
         Map<Participant, ParticipantResult> result = blackjackGame.getResult();
 
         return ResultResponse.listOf(result);

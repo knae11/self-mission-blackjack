@@ -52,14 +52,14 @@ public class BlackjackController {
 
     @GetMapping("/{gameId}/players/{playerId}")
     public ResponseEntity<ParticipantResponse> findPlayer(@PathVariable @NotNull Long gameId, @PathVariable @NotNull Long playerId) {
-        ParticipantResponse participantResponse = blackjackService.findPlayer(playerId);
+        ParticipantResponse participantResponse = blackjackService.findPlayer(gameId, playerId);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(participantResponse);
     }
 
     @GetMapping("/{gameId}/players/{playerId}/availability")
     public ResponseEntity<AvailabilityResponse> findPlayerAbleToTake(@PathVariable @NotNull Long gameId, @PathVariable @NotNull Long playerId) {
-        AvailabilityResponse availabilityResponse = blackjackService.findPlayerAbleToTake(playerId);
+        AvailabilityResponse availabilityResponse = blackjackService.findPlayerAbleToTake(gameId, playerId);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(availabilityResponse);
     }
@@ -72,7 +72,7 @@ public class BlackjackController {
 
     @GetMapping("/{gameId}/dealer/{dealerId}/availability")
     public ResponseEntity<AvailabilityResponse> findDealerAbleToTake(@PathVariable @NotNull Long gameId, @PathVariable @NotNull Long dealerId) {
-        AvailabilityResponse availabilityResponse = blackjackService.findDealerAbleToTake(dealerId);
+        AvailabilityResponse availabilityResponse = blackjackService.findDealerAbleToTake(gameId);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(availabilityResponse);
     }

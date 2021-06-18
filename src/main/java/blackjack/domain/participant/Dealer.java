@@ -36,6 +36,10 @@ public class Dealer implements Participant {
         this(id, dealer.state);
     }
 
+    public static Dealer create(Long id, Dealer dealer) {
+        return new Dealer(id, dealer.state);
+    }
+
     @Override
     public boolean hasCardSizeOf(int size) {
         return state.hasCardSizeOf(size);
