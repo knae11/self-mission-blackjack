@@ -181,9 +181,8 @@ public class BlackjackAcceptanceTest extends AcceptanceTest {
         BlackjackGameRequest request = 플레이어_요청생성();
         ExtractableResponse<Response> gameResponse = 게임생성(request);
         Long gameId = 아이디조회(gameResponse);
-        Long dealerId = gameResponse.as(BlackjackGameResponse.class).getDealer().getParticipantId();
 
-        ExtractableResponse<Response> response = 딜러_카드받기_가능_여부_조회(gameId, dealerId);
+        ExtractableResponse<Response> response = 딜러_카드받기_가능_여부_조회(gameId);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         AvailabilityResponse availabilityResponse = response.as(AvailabilityResponse.class);
@@ -197,14 +196,13 @@ public class BlackjackAcceptanceTest extends AcceptanceTest {
         BlackjackGameRequest request = 플레이어_요청생성();
         ExtractableResponse<Response> gameResponse = 게임생성(request);
         Long gameId = 아이디조회(gameResponse);
-        Long dealerId = gameResponse.as(BlackjackGameResponse.class).getDealer().getParticipantId();
 
-        boolean isAbleToTake = 딜러_카드받기_가능_여부_조회(gameId, dealerId).as(AvailabilityResponse.class).getIsAbleToTake();
+        boolean isAbleToTake = 딜러_카드받기_가능_여부_조회(gameId).as(AvailabilityResponse.class).getIsAbleToTake();
 
         if (isAbleToTake) {
             ExtractableResponse<Response> response = RestAssured
                     .given().log().all()
-                    .when().post("/api/blackjack/" + gameId + "/dealer/" + dealerId)
+                    .when().post("/api/blackjack/" + gameId + "/dealer")
                     .then().log().all()
                     .extract();
 
@@ -235,10 +233,10 @@ public class BlackjackAcceptanceTest extends AcceptanceTest {
                 .extract();
     }
 
-    private ExtractableResponse<Response> 딜러_카드받기_가능_여부_조회(Long gameId, Long dealerId) {
+    private ExtractableResponse<Response> 딜러_카드받기_가능_여부_조회(Long gameId) {
         return RestAssured
                 .given().log().all()
-                .when().get("/api/blackjack/" + gameId + "/dealer/" + dealerId + "/availability")
+                .when().get("/api/blackjack/" + gameId + "/dealer/availability")
                 .then().log().all()
                 .extract();
     }

@@ -340,7 +340,7 @@ body:
 status: ok
 ```
 - [x] 딜러 카드 받기 가능 여부 확인
-- get `/api/blackjack/{gameId}/dealer/{participantId}/availability`
+- get `/api/blackjack/{gameId}/dealer/availability`
 ```text
 <response>
 status: ok
@@ -351,7 +351,7 @@ body:
 ```
 
 - [x] 딜러 카드 받기
-- post `/api/blackjack/{gameId}/dealer/{participantId}`
+- post `/api/blackjack/{gameId}/dealer`
 ```text
 <response>
 status: ok

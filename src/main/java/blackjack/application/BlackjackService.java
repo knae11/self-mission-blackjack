@@ -104,7 +104,7 @@ public class BlackjackService {
     }
 
     @Transactional
-    public void takeDealerCard(Long gameId, Long dealerId) {
+    public void takeDealerCard(Long gameId) {
         BlackjackGame game = blackjackGameRepository.findForDealerTurn(gameId);
 
         Dealer dealer = game.getDealer();

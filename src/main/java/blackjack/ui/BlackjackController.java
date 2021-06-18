@@ -70,16 +70,16 @@ public class BlackjackController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @GetMapping("/{gameId}/dealer/{dealerId}/availability")
-    public ResponseEntity<AvailabilityResponse> findDealerAbleToTake(@PathVariable @NotNull Long gameId, @PathVariable @NotNull Long dealerId) {
+    @GetMapping("/{gameId}/dealer/availability")
+    public ResponseEntity<AvailabilityResponse> findDealerAbleToTake(@PathVariable @NotNull Long gameId) {
         AvailabilityResponse availabilityResponse = blackjackService.findDealerAbleToTake(gameId);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(availabilityResponse);
     }
 
-    @PostMapping("/{gameId}/dealer/{dealerId}")
-    public ResponseEntity<Void> takeDealerCard(@PathVariable @NotNull Long gameId, @PathVariable @NotNull Long dealerId) {
-        blackjackService.takeDealerCard(gameId, dealerId);
+    @PostMapping("/{gameId}/dealer")
+    public ResponseEntity<Void> takeDealerCard(@PathVariable @NotNull Long gameId) {
+        blackjackService.takeDealerCard(gameId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
