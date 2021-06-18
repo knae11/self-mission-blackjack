@@ -8,13 +8,14 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class DeckCardDao {
+public class JdbcDeckCardRepository implements DeckCardRepository {
     private final JdbcTemplate jdbcTemplate;
 
-    public DeckCardDao(JdbcTemplate jdbcTemplate) {
+    public JdbcDeckCardRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @Override
     public void update(Deck deck, Long gameId) {
         List<Card> previousCards = findPreviousCards(gameId);
         previousCards.removeAll(deck.getCards());

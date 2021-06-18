@@ -16,15 +16,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
 @DisplayName("[Dao] Game")
-class BlackjackGameDaoTest {
+class JdbcBlackjackGameRepositoryTest {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private BlackjackGameDao blackjackgameDao;
+    private BlackjackGameRepository blackjackGameRepository;
 
     @BeforeEach
     void setUp() {
-        this.blackjackgameDao = new BlackjackGameDao(jdbcTemplate);
+        this.blackjackGameRepository = new JdbcBlackjackGameRepository(jdbcTemplate);
     }
 
 
@@ -38,7 +38,7 @@ class BlackjackGameDaoTest {
         BlackjackGame game = BlackjackGame.createInitial(players);
 
         // when
-        BlackjackGame createdGame = blackjackgameDao.create(game);
+        BlackjackGame createdGame = blackjackGameRepository.create(game);
 
         // then
         assertThat(createdGame.getId()).isNotNull();
@@ -54,10 +54,10 @@ class BlackjackGameDaoTest {
                 new Player("better", 1000),
                 new Player("배럴", 2000));
         BlackjackGame game = BlackjackGame.createInitial(players);
-        BlackjackGame createdGame = blackjackgameDao.create(game);
+        BlackjackGame createdGame = blackjackGameRepository.create(game);
 
         // when
-        BlackjackGame foundGame = blackjackgameDao.findByGameId(createdGame.getId());
+        BlackjackGame foundGame = blackjackGameRepository.findByGameId(createdGame.getId());
 
         // then
         assertThat(foundGame.getId()).isEqualTo(createdGame.getId());

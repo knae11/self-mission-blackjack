@@ -11,14 +11,15 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class PlayerDao {
+public class JdbcPlayerRepository implements PlayerRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public PlayerDao(JdbcTemplate jdbcTemplate) {
+    public JdbcPlayerRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @Override
     public List<Player> findPlayersByGameId(Long gameId) {
         return findPlayers(gameId);
     }
@@ -42,11 +43,13 @@ public class PlayerDao {
         };
     }
 
+    @Override
     public Player findByIds(Long gameId, Long playerId) {
         String playerSql = "SELECT player_id, state, name, initial_betting FROM player WHERE game_id = ? AND player_id = ?";
         return jdbcTemplate.queryForObject(playerSql, playerRowMapper(), gameId, playerId);
     }
 
+    @Override
     public void update(Player player, List<Card> newCards) {
         String playerSql = "UPDATE player SET state = ? WHERE player_id = ?";
         jdbcTemplate.update(playerSql, player.getStateToString(), player.getId());

@@ -1,6 +1,6 @@
 package blackjack.application;
 
-import blackjack.dao.BlackjackGameDao;
+import blackjack.dao.BlackjackGameRepository;
 import blackjack.domain.BlackjackGame;
 import blackjack.domain.card.*;
 import blackjack.domain.participant.Dealer;
@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 class BlackjackServiceTest {
 
     @Mock
-    private BlackjackGameDao blackjackGameDao;
+    private BlackjackGameRepository blackjackGameRepository;
 
     @InjectMocks
     private BlackjackService blackjackService;
@@ -44,7 +44,7 @@ class BlackjackServiceTest {
                 new Player(3L, "222", 2000, new Stay(new Cards(card19)))
         );
         Deck deck = Deck.listOf(Collections.emptyList());
-        when(blackjackGameDao.findByGameId(1L)).thenReturn(BlackjackGame.create(1L, dealer, players, deck));
+        when(blackjackGameRepository.findByGameId(1L)).thenReturn(BlackjackGame.create(1L, dealer, players, deck));
 
         List<ResultResponse> result = blackjackService.getResult(1L);
 

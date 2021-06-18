@@ -11,14 +11,15 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class DealerDao {
+public class JdbcDealerRepository implements DealerRepository {
     private final JdbcTemplate jdbcTemplate;
 
-    public DealerDao(JdbcTemplate jdbcTemplate) {
+    public JdbcDealerRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
 
+    @Override
     public Dealer findByGameId(Long gameId) {
         return findDealer(gameId);
     }
@@ -40,6 +41,7 @@ public class DealerDao {
         };
     }
 
+    @Override
     public void update(Dealer dealer, List<Card> newCards) {
         String playerSql = "UPDATE dealer SET state = ? WHERE dealer_id = ?";
         jdbcTemplate.update(playerSql, dealer.getStateToString(), dealer.getId());

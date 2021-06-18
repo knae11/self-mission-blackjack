@@ -18,29 +18,25 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
-public class BlackjackGameDao {
+public class JdbcBlackjackGameRepository implements BlackjackGameRepository {
     private final JdbcTemplate jdbcTemplate;
 
-    public BlackjackGameDao(JdbcTemplate jdbcTemplate) {
+    public JdbcBlackjackGameRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Long findDealerId(Long gameId) {
-        String sql = "SELECT (dealer_id) FROM blackjackgame WHERE game_id = ?";
-        return jdbcTemplate.queryForObject(sql, Long.class, gameId);
-    }
-
-    public String findPlayerIds(Long gameId) {
-        String sql = "SELECT (player_ids) FROM blackjackgame WHERE game_id = ?";
-        return jdbcTemplate.queryForObject(sql, String.class, gameId);
-    }
-
-    public Long findDeckId(Long gameId) {
-        String sql = "SELECT (deck_id) FROM blackjackgame WHERE game_id = ?";
-        return jdbcTemplate.queryForObject(sql, Long.class, gameId);
-    }
-
+    @Override
     public BlackjackGame create(BlackjackGame blackjackGame) {
+        Long gameId = createGame();
+
+        Dealer createdDealer = createDealer(blackjackGame.getDealer(), gameId);
+        List<Player> createdPlayers = createPlayers(blackjackGame.getPlayers(), gameId);
+        createDeck(blackjackGame.getDeck(), gameId);
+
+        return BlackjackGame.create(gameId, createdDealer, createdPlayers, blackjackGame.getDeck());
+    }
+
+    private Long createGame() {
         String sql = "INSERT INTO blackjackgame (is_playing) VALUES (?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -51,12 +47,7 @@ public class BlackjackGameDao {
         }, keyHolder);
 
         Long gameId = (long) keyHolder.getKey();
-
-        Dealer createdDealer = createDealer(blackjackGame.getDealer(), gameId);
-        List<Player> createdPlayers = createPlayer(blackjackGame.getPlayers(), gameId);
-        createDeck(blackjackGame.getDeck(), gameId);
-
-        return BlackjackGame.create(gameId, createdDealer, createdPlayers, blackjackGame.getDeck());
+        return gameId;
     }
 
     private void createDeck(Deck deck, Long gameId) {
@@ -67,42 +58,55 @@ public class BlackjackGameDao {
                         jdbcTemplate.update(sql, card.getCardId(), gameId));
     }
 
-    private List<Player> createPlayer(List<Player> players, Long gameId) {
-        String sql = "INSERT INTO player (game_id, state, name, initial_betting) VALUES (?,?,?,?)";
+    private List<Player> createPlayers(List<Player> players, Long gameId) {
 
         List<Player> createdPlayers = players.stream()
-                .map(player -> {
-                    KeyHolder keyHolder = new GeneratedKeyHolder();
-                    jdbcTemplate.update(con -> {
-                        PreparedStatement ps = con.prepareStatement(sql, new String[]{"player_id"});
-                        ps.setLong(1, gameId);
-                        ps.setString(2, player.getStateToString());
-                        ps.setString(3, player.getName());
-                        ps.setInt(4, player.getInitialBetting());
-                        return ps;
-                    }, keyHolder);
-
-                    Long playerId = (long) keyHolder.getKey();
-                    Player createdPlayer = Player.create(playerId, player);
-                    createPlayerCard(createdPlayer);
-
-                    return createdPlayer;
-                })
+                .map(player -> createPlayer(gameId, player))
                 .collect(Collectors.toList());
 
         return createdPlayers;
     }
 
-    private void createPlayerCard(Player player) {
+    private Player createPlayer(Long gameId, Player player) {
+        Long playerId = createPlayerState(gameId, player);
+        createPlayerCard(player.getCards(), playerId);
+
+        return Player.create(playerId, player);
+    }
+
+
+    private Long createPlayerState(Long gameId, Player player) {
+        String sql = "INSERT INTO player (game_id, state, name, initial_betting) VALUES (?,?,?,?)";
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(sql, new String[]{"player_id"});
+            ps.setLong(1, gameId);
+            ps.setString(2, player.getStateToString());
+            ps.setString(3, player.getName());
+            ps.setInt(4, player.getInitialBetting());
+            return ps;
+        }, keyHolder);
+
+        Long playerId = (long) keyHolder.getKey();
+        return playerId;
+    }
+
+    private void createPlayerCard(List<Card> cards, Long playerId) {
         String sql = "INSERT INTO player_card (card, player_id) VALUES (?,?)";
 
-        List<Card> cards = player.getCards();
         cards.forEach(card ->
-                jdbcTemplate.update(sql, card.getCardId(), player.getId()));
-
+                jdbcTemplate.update(sql, card.getCardId(), playerId));
     }
 
     private Dealer createDealer(Dealer dealer, Long gameId) {
+        Long dealerId = createDealerState(dealer, gameId);
+        createDealerCard(dealer.getCards(), dealerId);
+
+        return Dealer.create(dealerId, dealer);
+    }
+
+    private Long createDealerState(Dealer dealer, Long gameId) {
         String sql = "INSERT INTO dealer (game_id, state) VALUES (?,?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -113,11 +117,7 @@ public class BlackjackGameDao {
             return ps;
         }, keyHolder);
 
-        Long dealerId = (long) keyHolder.getKey();
-        createDealerCard(dealer.getCards(), dealerId);
-        Dealer createdDealer = Dealer.create(dealerId, dealer);
-
-        return createdDealer;
+        return (long) keyHolder.getKey();
     }
 
     private void createDealerCard(List<Card> cards, Long dealerId) {
@@ -128,6 +128,7 @@ public class BlackjackGameDao {
 
     }
 
+    @Override
     public BlackjackGame findByGameId(Long gameId) {
         Dealer dealer = findDealer(gameId);
         List<Player> players = findPlayers(gameId);
@@ -172,9 +173,9 @@ public class BlackjackGameDao {
 
     }
 
+    @Override
     public BlackjackGame findForAPlayerTurn(Long gameId, Long playerId) {
         List<Card> deckCards = findDeck(gameId);
-
         Player player = findAPlayer(gameId, playerId);
 
         return BlackjackGame.create(gameId, player, Deck.listOf(deckCards));
@@ -183,17 +184,21 @@ public class BlackjackGameDao {
 
     private List<Card> findDeck(Long gameId) {
         String deckSql = "SELECT card FROM deck_card WHERE game_id = ? ORDER BY card_id";
+
         return jdbcTemplate.queryForList(deckSql, Card.class, gameId);
     }
 
     private Player findAPlayer(Long gameId, Long playerId) {
         String playerSql = "SELECT player_id, state, name, initial_betting FROM player WHERE (game_id = ? AND player_id = ?)";
+
         return jdbcTemplate.queryForObject(playerSql, playerRowMapper(), new Object[]{gameId, playerId});
     }
 
+    @Override
     public BlackjackGame findForDealerTurn(Long gameId) {
         Dealer dealer = findDealer(gameId);
         List<Card> deckCards = findDeck(gameId);
+
         return BlackjackGame.create(gameId, dealer, Deck.listOf(deckCards));
     }
 }
