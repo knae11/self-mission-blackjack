@@ -1,6 +1,9 @@
 package blackjack.application;
 
-import blackjack.dao.*;
+import blackjack.dao.BlackjackGameDao;
+import blackjack.dao.DealerDao;
+import blackjack.dao.DeckCardDao;
+import blackjack.dao.PlayerDao;
 import blackjack.domain.BlackjackGame;
 import blackjack.domain.card.Card;
 import blackjack.domain.participant.Dealer;
@@ -20,18 +23,12 @@ import java.util.stream.Collectors;
 public class BlackjackService {
 
     private final BlackjackGameDao blackjackgameDao;
-    private final DeckDao deckDao;
-    private final ParticipantDao participantDao;
-    private final StateDao stateDao;
     private final PlayerDao playerDao;
     private final DealerDao dealerDao;
     private final DeckCardDao deckCardDao;
 
-    public BlackjackService(BlackjackGameDao blackjackgameDao, DeckDao deckDao, ParticipantDao participantDao, StateDao stateDao, PlayerDao playerDao, DealerDao dealerDao, DeckCardDao deckCardDao) {
+    public BlackjackService(BlackjackGameDao blackjackgameDao, PlayerDao playerDao, DealerDao dealerDao, DeckCardDao deckCardDao) {
         this.blackjackgameDao = blackjackgameDao;
-        this.deckDao = deckDao;
-        this.participantDao = participantDao;
-        this.stateDao = stateDao;
         this.playerDao = playerDao;
         this.dealerDao = dealerDao;
         this.deckCardDao = deckCardDao;

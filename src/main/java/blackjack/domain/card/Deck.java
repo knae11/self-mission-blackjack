@@ -1,6 +1,5 @@
 package blackjack.domain.card;
 
-import blackjack.application.ListConvertor;
 import blackjack.exception.domain.card.CardEmptyException;
 
 import java.util.ArrayList;
@@ -43,10 +42,6 @@ public class Deck {
 
     public List<Card> getCards() {
         return new ArrayList<>(cards);
-    }
-
-    public String getCardIds() {
-        return ListConvertor.compressCardIds(cards);
     }
 
     public Card drawCard() {
