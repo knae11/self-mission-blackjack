@@ -20,37 +20,16 @@ public class BlackjackGame {
     private final List<Player> players;
     private final Deck deck;
 
-    public BlackjackGame(Long id, Dealer dealer, List<Player> players, Deck deck) {
+    private BlackjackGame(Long id, Dealer dealer, List<Player> players, Deck deck) {
         this.id = id;
         this.dealer = dealer;
         this.players = players;
         this.deck = deck;
     }
 
-    public BlackjackGame(Dealer dealer, List<Player> players, Deck deck) {
-        this(null, dealer, players, deck);
-    }
-
-    public BlackjackGame(Player player, Deck deck) {
-        this(null, Collections.singletonList(player), deck);
-    }
-
-    public BlackjackGame(Dealer dealer, Deck deck) {
-        this(dealer, Collections.emptyList(), deck);
-    }
-
-    public BlackjackGame(Player player) {
-        this(null, Collections.singletonList(player), null);
-    }
-
-    public BlackjackGame(Dealer dealer, List<Player> players) {
-        this(dealer, players, null);
-    }
-
     public static BlackjackGame createInitial(List<Player> players) {
-        BlackjackGame blackjackGame = new BlackjackGame(new Dealer(), players, Deck.createShuffled());
+        BlackjackGame blackjackGame = new BlackjackGame(null, new Dealer(), players, Deck.createShuffled());
         blackjackGame.initGame();
-
         return blackjackGame;
     }
 
@@ -58,16 +37,40 @@ public class BlackjackGame {
         return new BlackjackGame(id, dealer, players, deck);
     }
 
+    public static BlackjackGame create(Dealer dealer, List<Player> players, Deck deck) {
+        return new BlackjackGame(null, dealer, players, deck);
+    }
+
     public static BlackjackGame create(long gameId, Dealer dealer, List<Player> players) {
         return new BlackjackGame(gameId, dealer, players, null);
+    }
+
+    public static BlackjackGame create(Dealer dealer, List<Player> players) {
+        return new BlackjackGame(null, dealer, players, null);
+    }
+
+    public static BlackjackGame create(long gameId, Player player) {
+        return new BlackjackGame(gameId, null, Collections.singletonList(player), null);
+    }
+
+    public static BlackjackGame create(Player player) {
+        return new BlackjackGame(null, null, Collections.singletonList(player), null);
+    }
+
+    public static BlackjackGame create(long id, Dealer dealer, Deck deck) {
+        return new BlackjackGame(id, dealer, Collections.emptyList(), deck);
+    }
+
+    public static BlackjackGame create(Dealer dealer, Deck deck) {
+        return new BlackjackGame(null, dealer, Collections.emptyList(), deck);
     }
 
     public static BlackjackGame create(long gameId, Player player, Deck deck) {
         return new BlackjackGame(gameId, null, Collections.singletonList(player), deck);
     }
 
-    public static BlackjackGame create(long id, Dealer dealer, Deck deck) {
-        return new BlackjackGame(id, dealer, null, deck);
+    public static BlackjackGame create(Player player, Deck deck) {
+        return new BlackjackGame(null, null, Collections.singletonList(player), deck);
     }
 
     public void initGame() {

@@ -36,7 +36,7 @@ public class BlackjackGameTest {
                 new Player("2", 2000)
         );
         Deck deck = Deck.createBasic();
-        BlackjackGame blackjackGame = new BlackjackGame(dealer, players, deck);
+        BlackjackGame blackjackGame = BlackjackGame.create(dealer, players, deck);
 
         // when
         blackjackGame.initGame();
@@ -53,7 +53,7 @@ public class BlackjackGameTest {
         List<Card> p1Cards = Arrays.asList(Card.of(Suit.HEART, Denomination.TWO),
                 Card.of(Suit.DIAMOND, Denomination.TWO));
         Player player = new Player("1", 1000, new Hit(new Cards(p1Cards)));
-        BlackjackGame blackjackGame = new BlackjackGame(player);
+        BlackjackGame blackjackGame = BlackjackGame.create(player);
 
         // when
         boolean isAbleToTake = blackjackGame.isAbleToTakeCardOf(player);
@@ -70,7 +70,7 @@ public class BlackjackGameTest {
         List<Card> p1Cards = Arrays.asList(Card.of(Suit.HEART, Denomination.TEN),
                 Card.of(Suit.DIAMOND, Denomination.ACE));
         Player player = new Player("1", 1000, new Blackjack(new Cards(p1Cards)));
-        BlackjackGame blackjackGame = new BlackjackGame(player);
+        BlackjackGame blackjackGame = BlackjackGame.create(player);
 
         // when
         boolean isAbleToTake = blackjackGame.isAbleToTakeCardOf(player);
@@ -88,7 +88,7 @@ public class BlackjackGameTest {
                 Card.of(Suit.DIAMOND, Denomination.TWO));
         Player player = new Player("1", 1000, new Hit(new Cards(p1Cards)));
         Deck deck = Deck.listOf(Collections.singletonList(Card.of(Suit.CLOVER, Denomination.THREE)));
-        BlackjackGame blackjackGame = new BlackjackGame(player, deck);
+        BlackjackGame blackjackGame = BlackjackGame.create(player, deck);
 
         // when
         State state = blackjackGame.takeTurnOf(true, player);
@@ -107,7 +107,7 @@ public class BlackjackGameTest {
                 Card.of(Suit.DIAMOND, Denomination.TWO));
         Player player = new Player("1", 1000, new Hit(new Cards(p1Cards)));
         Deck deck = Deck.listOf(Collections.singletonList(Card.of(Suit.CLOVER, Denomination.THREE)));
-        BlackjackGame blackjackGame = new BlackjackGame(player, deck);
+        BlackjackGame blackjackGame = BlackjackGame.create(player, deck);
 
         // when
         State state = blackjackGame.takeTurnOf(false, player);
@@ -125,7 +125,7 @@ public class BlackjackGameTest {
         Dealer dealer = new Dealer();
         Deck deck = Deck.listOf(Arrays.asList(Card.of(Suit.HEART, Denomination.TEN),
                 Card.of(Suit.DIAMOND, Denomination.SIX)));
-        BlackjackGame blackjackGame = new BlackjackGame(dealer, deck);
+        BlackjackGame blackjackGame = BlackjackGame.create(dealer, deck);
         blackjackGame.initGame();
 
         // when
@@ -143,7 +143,7 @@ public class BlackjackGameTest {
         Dealer dealer = new Dealer();
         Deck deck = Deck.listOf(Arrays.asList(Card.of(Suit.HEART, Denomination.TEN),
                 Card.of(Suit.DIAMOND, Denomination.SEVEN)));
-        BlackjackGame blackjackGame = new BlackjackGame(dealer, deck);
+        BlackjackGame blackjackGame = BlackjackGame.create(dealer, deck);
         blackjackGame.initGame();
 
         // when
@@ -162,7 +162,7 @@ public class BlackjackGameTest {
                 Card.of(Suit.DIAMOND, Denomination.SIX));
         Dealer dealer = new Dealer(new Hit(new Cards(cards)));
         Deck deck = Deck.listOf(Collections.singletonList(Card.of(Suit.DIAMOND, Denomination.TWO)));
-        BlackjackGame blackjackGame = new BlackjackGame(dealer, deck);
+        BlackjackGame blackjackGame = BlackjackGame.create(dealer, deck);
 
         // when
         boolean isAbleToTake = blackjackGame.isAbleToTakeCardOf(dealer);
@@ -188,7 +188,7 @@ public class BlackjackGameTest {
         List<Player> players = Arrays.asList(
                 new Player("하나", 1000, new Blackjack(new Cards(blackjackCards))),
                 new Player("둘", 2000, new Stay(new Cards(stayCards))));
-        BlackjackGame blackjackGame = new BlackjackGame(dealer, players);
+        BlackjackGame blackjackGame = BlackjackGame.create(dealer, players);
 
         // when
         Map<Participant, ParticipantResult> result = blackjackGame.getResult();
@@ -209,7 +209,7 @@ public class BlackjackGameTest {
         List<Player> players = Arrays.asList(
                 new Player("하나", 1000, new Blackjack(new Cards(blackjackCards))),
                 new Player("둘", 2000, new Hit(new Cards(cards))));
-        BlackjackGame blackjackGame = new BlackjackGame(dealer, players);
+        BlackjackGame blackjackGame = BlackjackGame.create(dealer, players);
 
         // when, then
         assertThatThrownBy(blackjackGame::getResult).isInstanceOf(GameNotEndException.class);
